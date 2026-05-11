@@ -302,6 +302,22 @@
     font-size: 15px;
 }
 
+@media (min-width: 1900px) {
+    .recently-tabs-marquee {
+        width: 100%;
+        overflow: hidden;
+        padding: 4px 0 6px;
+        max-width: 1348px;
+        margin: 0 auto;
+    }
+
+    .recently-tabs-full {
+        width: 100%;
+        max-width: 1380px;
+        margin: 0 auto;overflow: hidden;
+    }
+}
+
 @media (max-width: 1199px) {
     .recently-container {
         padding-left: 32px;

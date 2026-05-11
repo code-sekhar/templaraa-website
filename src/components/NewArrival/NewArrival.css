@@ -351,6 +351,13 @@ button.new-arrival-control-btn.next {
     border-color: #e95842;
 }
 
+@media (min-width: 1920px) and (max-width: 3000px) {
+    .new-arrival-card {
+        flex: 0 0 400px;
+        width: 400px;
+    }
+}
+
 @media (max-width: 1199px) {
     .new-arrival-container {
         padding-left: 32px;

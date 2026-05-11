@@ -119,7 +119,9 @@ function Product({
     setActiveGroup(matchedGroup);
     setActiveSubCategory(subCategoryFromUrl || "All");
 
-    setOpenGroup("");
+    if (subCategoryFromUrl && matchedGroup !== "All Items") {
+      setOpenGroup(matchedGroup);
+    }
   }, [searchParams]);
 
   const getProductsByGroup = (group) => {
@@ -239,9 +241,10 @@ function Product({
     if (group === "All Items") {
       setSearchParams({});
       setOpenGroup("");
-    } else {
-      setSearchParams({ category: group });
+      return;
     }
+
+    setSearchParams({ category: group });
   };
 
   const handleArrowClick = (event, group) => {
@@ -249,7 +252,14 @@ function Product({
 
     if (group === "All Items") return;
 
-    setOpenGroup((currentGroup) => (currentGroup === group ? "" : group));
+    const isCurrentlyOpen = openGroup === group;
+
+    if (isCurrentlyOpen) {
+      setOpenGroup("");
+      return;
+    }
+
+    setOpenGroup(group);
     setActiveGroup(group);
     setActiveSubCategory("All");
     setSearchParams({ category: group });
@@ -260,6 +270,7 @@ function Product({
 
     setActiveGroup(group);
     setActiveSubCategory(subCategory);
+    setOpenGroup(group);
 
     if (group === "All Items") {
       setSearchParams({});
@@ -319,8 +330,6 @@ function Product({
   const handleBreadcrumbGroupClick = () => {
     setActiveSubCategory("All");
     setSearchParams({ category: activeGroup });
-
-    setOpenGroup("");
   };
 
   const handleApplyFilter = () => {

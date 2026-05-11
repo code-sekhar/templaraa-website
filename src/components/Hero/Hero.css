@@ -326,21 +326,56 @@
 }
 
 /* Responsive Start */
-
-@media (min-width: 1500px) and (max-width: 1599px) {
+@media (min-width: 2401px) {
     .hero-right-visual {
         right: calc((100vw - 1440px) / -2);
-        width: 56vw;
-        max-width: 900px;
-        height: 650px;
+        width: 1200px;
+        max-width: 1200px;
+        height: 690px;
     }
 
     .hero-payment-card {
-        bottom: 0 !important;
+        bottom: 34px;
+        right: 290px;
+    }
+
+    .hero-buyer-card {
+        right: 355px;
     }
 }
 
-@media (min-width: 1600px) and (max-width: 1919px) {
+@media (min-width: 2041px) and (max-width: 2400px) {
+    .hero-right-visual {
+        right: calc((100vw - 1440px) / -2);
+        width: 1140px;
+        max-width: 1140px;
+        height: 690px;
+    }
+
+    .hero-payment-card {
+        bottom: 34px;
+        right: 290px;
+    }
+
+    .hero-buyer-card {
+        right: 355px;
+    }
+}
+
+@media (min-width: 1841px) and (max-width: 2040px) {
+    .hero-right-visual {
+        right: calc((100vw - 1440px) / -2);
+        width: 1000px;
+        max-width: 1000px;
+        height: 658px;
+    }
+
+    .hero-payment-card {
+        bottom: 30px;
+    }
+}
+
+@media (min-width: 1600px) and (max-width: 1840px) {
     .hero-right-visual {
         right: calc((100vw - 1440px) / -2);
         width: 900px;
@@ -353,21 +388,16 @@
     }
 }
 
-@media (min-width: 1920px) {
+@media (min-width: 1500px) and (max-width: 1599px) {
     .hero-right-visual {
         right: calc((100vw - 1440px) / -2);
-        width: 1300px;
-        max-width: 1300px;
-        height: 658px;
-    }
-
-    .hero-buyer-card {
-        right: 360px;
+        width: 56vw;
+        max-width: 900px;
+        height: 650px;
     }
 
     .hero-payment-card {
-        right: 395px;
-        bottom: 30px;
+        bottom: 0 !important;
     }
 }
 
