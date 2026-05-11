@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
 import Product from "./pages/Product/Product";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
 
 function App() {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ function App() {
           item.id === product.id
             ? {
                 ...item,
-                quantity: item.quantity + 1,
+                quantity: item.quantity + (product.quantity || 1),
               }
             : item
         );
@@ -95,7 +96,7 @@ function App() {
         ...prevItems,
         {
           ...product,
-          quantity: 1,
+          quantity: product.quantity || 1,
         },
       ];
     });
@@ -143,8 +144,14 @@ function App() {
               onProductClick={handleProductClick}
               onAddToCart={handleAddToCart}
               onRatingFilter={handleRatingFilter}
+              onJoinClick={handleJoinClick}
             />
           }
+        />
+
+        <Route
+          path="/products/:slug"
+          element={<ProductDetails onAddToCart={handleAddToCart} />}
         />
       </Routes>
 

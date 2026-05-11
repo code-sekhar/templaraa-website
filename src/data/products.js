@@ -90,6 +90,137 @@ const productFeatures = {
   ],
 };
 
+const productTagsByGroup = {
+  Ecommerce: ["html", "react", "checkout"],
+  Business: ["business", "agency", "landing"],
+  Entertainment: ["media", "event", "streaming"],
+  Personal: ["resume", "profile", "personal"],
+  Portfolio: ["portfolio", "creative", "showcase"],
+  Studio: ["studio", "branding", "creative"],
+  Technology: ["saas", "dashboard", "react"],
+  Corporate: ["corporate", "company", "business"],
+  Retails: ["retail", "shopify", "store"],
+};
+
+const includedPagesByGroup = {
+  Ecommerce: [
+    "Homepage",
+    "Product Listing",
+    "Product Details",
+    "Cart Page",
+    "Checkout",
+    "Wishlist",
+    "Customer Account",
+    "Order Tracking",
+    "Contact Page",
+    "404 Page",
+  ],
+  Business: [
+    "Homepage",
+    "About Us",
+    "Services",
+    "Service Details",
+    "Projects",
+    "Pricing",
+    "Team",
+    "Testimonials",
+    "Contact Page",
+    "404 Page",
+  ],
+  Entertainment: [
+    "Homepage",
+    "Trending Page",
+    "Category Page",
+    "Details Page",
+    "Event Page",
+    "Gallery",
+    "Blog",
+    "Contact Page",
+    "Help Center",
+    "404 Page",
+  ],
+  Personal: [
+    "Homepage",
+    "About Me",
+    "Resume",
+    "Portfolio",
+    "Blog",
+    "Single Blog",
+    "Services",
+    "Contact Page",
+    "Download CV",
+    "404 Page",
+  ],
+  Portfolio: [
+    "Homepage",
+    "About",
+    "Portfolio Grid",
+    "Project Details",
+    "Case Study",
+    "Services",
+    "Testimonials",
+    "Contact Page",
+    "Archive Page",
+    "404 Page",
+  ],
+  Studio: [
+    "Homepage",
+    "Studio About",
+    "Services",
+    "Project Showcase",
+    "Project Details",
+    "Gallery",
+    "Team",
+    "Booking",
+    "Contact Page",
+    "404 Page",
+  ],
+  Technology: [
+    "Homepage",
+    "Features",
+    "Dashboard Preview",
+    "Pricing",
+    "Integrations",
+    "Use Cases",
+    "Documentation",
+    "Contact Page",
+    "Help Center",
+    "404 Page",
+  ],
+  Corporate: [
+    "Homepage",
+    "Company Profile",
+    "Services",
+    "Service Details",
+    "Leadership",
+    "Case Studies",
+    "Careers",
+    "Contact Page",
+    "Help Center",
+    "404 Page",
+  ],
+  Retails: [
+    "Homepage",
+    "Shop Page",
+    "Product Details",
+    "Collection Page",
+    "Cart Page",
+    "Checkout",
+    "Store Locator",
+    "Account Page",
+    "Contact Page",
+    "404 Page",
+  ],
+};
+
+const getProductShortDescription = (product) => {
+  return `A complete ${product.group} template with modern UI/UX, reusable sections, responsive layouts, product-ready components, and premium visual hierarchy.`;
+};
+
+const getProductDocumentation = (product) => {
+  return `${product.title} is a modern, clean, and highly functional website template built for ${product.group.toLowerCase()} projects. This template provides a strong professional presence with structured layouts, polished visual sections, reusable components, and conversion-focused content blocks. It is designed to help businesses, creators, and digital teams launch faster without starting from scratch. The layout is fully responsive, easy to customize, and suitable for production-ready websites. Perfect for ${product.subCategory.toLowerCase()} focused projects that need a reliable, premium, and conversion-driven digital experience.`;
+};
+
 const createProduct = ({
   id,
   slug,
@@ -103,26 +234,57 @@ const createProduct = ({
   source = "Product Library",
   badge = "",
   sales = "",
+  oldPrice = "",
+  tags,
   description,
+  documentation,
   features,
-}) => ({
-  id,
-  slug,
-  title,
-  author,
-  group,
-  tech: subCategory,
-  subCategory,
-  price,
-  rating,
-  image,
-  path: `/products/${slug}`,
-  source,
-  badge,
-  sales,
-  description: description || productDescriptions[group],
-  features: features || productFeatures[group],
-});
+  includedPages,
+}) => {
+  const productBase = {
+    id,
+    slug,
+    title,
+    author,
+    group,
+    tech: subCategory,
+    subCategory,
+    price,
+    rating,
+    image,
+    path: `/products/${slug}`,
+    source,
+    badge,
+    sales,
+  };
+
+  return {
+    ...productBase,
+    oldPrice: oldPrice || Number((price + price * 0.18).toFixed(2)),
+    tags: tags || productTagsByGroup[group] || ["html", "react", "template"],
+    description: description || getProductShortDescription(productBase),
+    documentation: documentation || getProductDocumentation(productBase),
+    features:
+      features ||
+      productFeatures[group] || [
+        "Modern, professional design",
+        "Fully responsive layout",
+        "Easy customization",
+        "Fast-loading structure",
+        "Clean reusable sections",
+      ],
+    includedPages:
+      includedPages ||
+      includedPagesByGroup[group] || [
+        "Homepage",
+        "About",
+        "Services",
+        "Details",
+        "Contact",
+        "404 Page",
+      ],
+  };
+};
 
 export const products = [
   createProduct({
@@ -135,6 +297,7 @@ export const products = [
     price: 88,
     rating: 5,
     image: getProductImage("product-01.png"),
+    badge: "Premium",
   }),
   createProduct({
     id: 2,
@@ -366,6 +529,7 @@ export const products = [
     price: 58,
     rating: 5,
     image: getProductImage("product-22.png"),
+    badge: "New",
   }),
   createProduct({
     id: 23,
@@ -499,6 +663,7 @@ export const products = [
     rating: 5,
     image: getProductImage("product-34.png"),
   }),
+
   createProduct({
     id: 35,
     slug: "ecommerce-template-collection",
@@ -575,6 +740,7 @@ export const products = [
     image: getProductImage("category-studio.png"),
     source: "Homepage Category",
   }),
+
   createProduct({
     id: 101,
     slug: "insightpro-admin-dashboard",
@@ -699,6 +865,7 @@ export const products = [
     badge: "Hot",
     sales: "132 Sales",
   }),
+
   createProduct({
     id: 201,
     slug: "astraflow-business-theme",
@@ -814,11 +981,10 @@ export const products = [
 ];
 
 export const allItemsMixOrder = [
-  203, 102, 39, 202, 103, 30, 28, 33, 31, 29, 27, 25, 23, 21,
-  204, 105, 38, 206, 106, 40, 208, 108, 26, 207, 107, 22,
-  209, 109, 9, 34, 32, 36, 201, 101, 35, 205, 104, 37,
-  19, 17, 15, 13, 11, 20, 18, 16, 14, 12, 10, 8, 6, 4,
-  2, 7, 5, 3, 1, 24,
+  101, 201, 35, 102, 202, 39, 109, 22, 103, 203, 36, 104, 205, 105, 204, 37,
+  106, 206, 40, 107, 26, 108, 208, 38, 9, 207, 209, 1, 2, 3, 4, 5, 6, 7, 8,
+  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29,
+  30, 31, 32, 33, 34,
 ];
 
 export const mainFilters = [
