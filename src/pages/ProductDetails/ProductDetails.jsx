@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { products } from "../../data/products";
 import "./ProductDetails.css";
@@ -13,29 +13,77 @@ const normalizeText = (value = "") => {
     .replace(/^-+|-+$/g, "");
 };
 
+const getFallbackFeedbacks = (product) => [
+  {
+    id: 1,
+    name: "Kristin Watson",
+    time: "2 min ago",
+    rating: 5,
+    comment: `Clean and professional ${product.group} template. The layout feels modern, responsive, and easy to customize for a real project.`,
+  },
+  {
+    id: 2,
+    name: "Jane Cooper",
+    time: "30 Apr, 2024",
+    rating: 5,
+    comment: `Good quality design and structure. The sections are well organized, and the ${product.subCategory} flow feels very practical.`,
+  },
+  {
+    id: 3,
+    name: "Jacob Jones",
+    time: "1 week ago",
+    rating: 5,
+    comment:
+      "The spacing, typography, and component structure are very clean. It saved a lot of time for building a polished website.",
+  },
+  {
+    id: 4,
+    name: "Ralph Edwards",
+    time: "2 weeks ago",
+    rating: 5,
+    comment:
+      "Great value for the price. The template is responsive, easy to edit, and visually consistent across sections.",
+  },
+];
+
 function ProductDetails({ onAddToCart }) {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const relatedSliderRef = useRef(null);
 
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [visibleFeedbackCount, setVisibleFeedbackCount] = useState(4);
 
   const product = useMemo(() => {
-    return products.find((item) => item.slug === slug);
+    const normalizedSlug = normalizeText(slug);
+
+    return (
+      products.find((item) => item.slug === slug) ||
+      products.find((item) => normalizeText(item.slug) === normalizedSlug) ||
+      null
+    );
   }, [slug]);
 
   const relatedProducts = useMemo(() => {
     if (!product) return [];
 
-    return products
-      .filter(
-        (item) =>
-          item.id !== product.id &&
-          (item.group === product.group ||
-            item.subCategory === product.subCategory)
-      )
-      .slice(0, 3);
+    const matchedProducts = products.filter((item) => {
+      if (item.id === product.id) return false;
+
+      return (
+        item.group === product.group ||
+        item.subCategory === product.subCategory
+      );
+    });
+
+    const extraProducts = products.filter((item) => {
+      if (item.id === product.id) return false;
+      return !matchedProducts.some((matched) => matched.id === item.id);
+    });
+
+    return [...matchedProducts, ...extraProducts].slice(0, 10);
   }, [product]);
 
   if (!product) {
@@ -54,6 +102,7 @@ function ProductDetails({ onAddToCart }) {
   }
 
   const productSku = `TPL-${String(product.id).padStart(3, "0")}`;
+
   const oldPrice = Number(
     product.oldPrice || product.price + product.price * 0.18
   );
@@ -64,6 +113,14 @@ function ProductDetails({ onAddToCart }) {
   );
 
   const ratingStars = Array.from({ length: 5 }).map((_, index) => index + 1);
+
+  const feedbacks =
+    product.feedbacks ||
+    product.reviews ||
+    product.customerFeedback ||
+    getFallbackFeedbacks(product);
+
+  const visibleFeedbacks = feedbacks.slice(0, visibleFeedbackCount);
 
   const handleQuantityMinus = () => {
     setQuantity((current) => Math.max(1, current - 1));
@@ -88,12 +145,46 @@ function ProductDetails({ onAddToCart }) {
   };
 
   const handleRelatedClick = (item) => {
-    navigate(item.path);
+    navigate(item.path || `/products/${item.slug}`, {
+      replace: false,
+      state: null,
+    });
 
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const handleLoadMoreFeedback = () => {
+    setVisibleFeedbackCount((current) => current + 4);
+  };
+
+  const handleRelatedSlide = (direction) => {
+    const slider = relatedSliderRef.current;
+
+    if (!slider) return;
+
+    const card = slider.querySelector(".details-related-card");
+    const sliderStyle = window.getComputedStyle(slider);
+    const gap =
+      Number.parseFloat(sliderStyle.columnGap || sliderStyle.gap) || 22;
+
+    const scrollAmount = card ? card.offsetWidth + gap : 320;
+
+    slider.scrollBy({
+      left: direction === "next" ? scrollAmount : -scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
+  const renderStars = (count) => {
+    return ratingStars.map((star) => (
+      <ion-icon
+        key={star}
+        name={star <= Number(count) ? "star" : "star-outline"}
+      ></ion-icon>
+    ));
   };
 
   return (
@@ -153,14 +244,7 @@ function ProductDetails({ onAddToCart }) {
               </div>
 
               <div className="details-rating-row">
-                <div className="details-stars">
-                  {ratingStars.map((star) => (
-                    <ion-icon
-                      key={star}
-                      name={star <= product.rating ? "star" : "star-outline"}
-                    ></ion-icon>
-                  ))}
-                </div>
+                <div className="details-stars">{renderStars(product.rating)}</div>
 
                 <span>{product.rating}.0 Rating</span>
 
@@ -194,25 +278,29 @@ function ProductDetails({ onAddToCart }) {
                 <div className="details-share-box">
                   <span>Share item:</span>
 
-                  <button type="button" aria-label="Share on Facebook">
-                    <ion-icon name="logo-facebook"></ion-icon>
-                  </button>
+                  <div className="details-share-buttons">
+                    <button type="button" aria-label="Share on Facebook">
+                      <ion-icon name="logo-facebook"></ion-icon>
+                    </button>
 
-                  <button type="button" aria-label="Share on Twitter">
-                    <ion-icon name="logo-twitter"></ion-icon>
-                  </button>
+                    <button type="button" aria-label="Share on Twitter">
+                      <ion-icon name="logo-twitter"></ion-icon>
+                    </button>
 
-                  <button type="button" aria-label="Share on LinkedIn">
-                    <ion-icon name="logo-linkedin"></ion-icon>
-                  </button>
+                    <button type="button" aria-label="Share on LinkedIn">
+                      <ion-icon name="logo-linkedin"></ion-icon>
+                    </button>
 
-                  <button type="button" aria-label="Copy product link">
-                    <ion-icon name="link-outline"></ion-icon>
-                  </button>
+                    <button type="button" aria-label="Copy product link">
+                      <ion-icon name="link-outline"></ion-icon>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <p className="details-short-description">{product.description}</p>
+              <p className="details-short-description">
+                {product.description}
+              </p>
 
               <div className="details-divider"></div>
 
@@ -262,11 +350,12 @@ function ProductDetails({ onAddToCart }) {
                 Buy Now
               </button>
 
-              <div className="details-divider"></div>
+              <div className="details-divider details-meta-divider"></div>
 
               <div className="details-meta-list">
                 <p>
                   <strong>Category:</strong>
+
                   <button
                     type="button"
                     onClick={() =>
@@ -283,6 +372,7 @@ function ProductDetails({ onAddToCart }) {
 
                 <p>
                   <strong>Sub Category:</strong>
+
                   <button
                     type="button"
                     onClick={() =>
@@ -301,6 +391,7 @@ function ProductDetails({ onAddToCart }) {
 
                 <p>
                   <strong>Tags:</strong>
+
                   {product.tags.map((tag) => (
                     <span key={tag}>{tag}</span>
                   ))}
@@ -403,6 +494,11 @@ function ProductDetails({ onAddToCart }) {
                   </div>
 
                   <div>
+                    <strong>Category</strong>
+                    <span>{product.group}</span>
+                  </div>
+
+                  <div>
                     <strong>Sub Category</strong>
                     <span>{product.subCategory}</span>
                   </div>
@@ -426,6 +522,11 @@ function ProductDetails({ onAddToCart }) {
                     <strong>Included Pages</strong>
                     <span>{product.includedPages.length} Pages</span>
                   </div>
+
+                  <div>
+                    <strong>Source</strong>
+                    <span>{product.source}</span>
+                  </div>
                 </div>
 
                 <div className="details-included-pages">
@@ -442,43 +543,44 @@ function ProductDetails({ onAddToCart }) {
 
             {activeTab === "feedback" && (
               <div className="details-tab-content">
-                <div className="details-feedback-card">
-                  <div className="details-feedback-score">
-                    <strong>{product.rating}.0</strong>
+                <div className="details-feedback-list-layout">
+                  {visibleFeedbacks.map((feedback) => (
+                    <article
+                      className="details-feedback-item"
+                      key={feedback.id || feedback.name}
+                    >
+                      <div className="details-feedback-avatar">
+                        {feedback.avatar ? (
+                          <img src={feedback.avatar} alt={feedback.name} />
+                        ) : (
+                          <ion-icon name="person"></ion-icon>
+                        )}
+                      </div>
 
-                    <div>
-                      {ratingStars.map((star) => (
-                        <ion-icon
-                          key={star}
-                          name={
-                            star <= product.rating ? "star" : "star-outline"
-                          }
-                        ></ion-icon>
-                      ))}
-                    </div>
+                      <div className="details-feedback-content">
+                        <div className="details-feedback-top">
+                          <h4>{feedback.name}</h4>
+                          <span>{feedback.time || feedback.date}</span>
+                        </div>
 
-                    <span>
-                      Based on template quality, UI consistency, and value.
-                    </span>
-                  </div>
+                        <div className="details-feedback-stars">
+                          {renderStars(feedback.rating || 5)}
+                        </div>
 
-                  <div className="details-feedback-list">
-                    <article>
-                      <h4>Excellent visual quality</h4>
-                      <p>
-                        Clean layout, strong spacing, and premium sections make
-                        this template feel production-ready.
-                      </p>
+                        <p>{feedback.comment}</p>
+                      </div>
                     </article>
+                  ))}
 
-                    <article>
-                      <h4>Easy to customize</h4>
-                      <p>
-                        The structure is simple to adapt for different business,
-                        portfolio, ecommerce, or SaaS projects.
-                      </p>
-                    </article>
-                  </div>
+                  {visibleFeedbackCount < feedbacks.length && (
+                    <button
+                      type="button"
+                      className="details-feedback-load-btn"
+                      onClick={handleLoadMoreFeedback}
+                    >
+                      Load More
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -486,12 +588,32 @@ function ProductDetails({ onAddToCart }) {
 
           {relatedProducts.length > 0 && (
             <div className="details-related-section">
-              <div className="details-related-heading">
-                <span>RELATED PRODUCTS</span>
-                <h2>More templates you may like</h2>
+              <div className="details-related-heading-row">
+                <div className="details-related-heading">
+                  <span>RELATED PRODUCTS</span>
+                  <h2>More templates you may like</h2>
+                </div>
+
+                <div className="details-related-controls">
+                  <button
+                    type="button"
+                    onClick={() => handleRelatedSlide("prev")}
+                    aria-label="Previous related product"
+                  >
+                    <ion-icon name="chevron-back-outline"></ion-icon>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleRelatedSlide("next")}
+                    aria-label="Next related product"
+                  >
+                    <ion-icon name="chevron-forward-outline"></ion-icon>
+                  </button>
+                </div>
               </div>
 
-              <div className="details-related-grid">
+              <div className="details-related-slider" ref={relatedSliderRef}>
                 {relatedProducts.map((item) => (
                   <article
                     className="details-related-card"
