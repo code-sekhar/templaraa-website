@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { products } from "../../data/products";
 import "./ProductDetails.css";
@@ -19,49 +19,138 @@ const getFallbackFeedbacks = (product) => [
     name: "Kristin Watson",
     time: "2 min ago",
     rating: 5,
-    comment: `Clean and professional ${product.group} template. The layout feels modern, responsive, and easy to customize for a real project.`,
+    title: "Excellent template quality",
+    comment: `${product.title} feels clean, modern, and very easy to customize. The layout quality is strong and the responsive behavior works nicely for client projects.`,
   },
   {
     id: 2,
     name: "Jane Cooper",
     time: "30 Apr, 2024",
     rating: 5,
-    comment: `Good quality design and structure. The sections are well organized, and the ${product.subCategory} flow feels very practical.`,
+    title: "Easy to customize",
+    comment: `The ${product.subCategory} structure is practical and well organized. It has useful sections, polished spacing, and a professional visual style.`,
   },
   {
     id: 3,
     name: "Jacob Jones",
     time: "1 week ago",
     rating: 5,
+    title: "Saved a lot of time",
     comment:
-      "The spacing, typography, and component structure are very clean. It saved a lot of time for building a polished website.",
+      "The component structure is simple to understand and the design hierarchy feels premium. It saved a lot of time during customization.",
   },
   {
     id: 4,
     name: "Ralph Edwards",
     time: "2 weeks ago",
     rating: 5,
+    title: "Great value",
     comment:
-      "Great value for the price. The template is responsive, easy to edit, and visually consistent across sections.",
+      "Great value for the price. The pages are responsive, the sections are reusable, and the template feels production-ready.",
   },
 ];
+
+const getFallbackInstallation = (product) => {
+  const projectFolder = normalizeText(product.title) || "templaraa-project";
+
+  return {
+    prerequisites: [
+      "Node.js 18+ installed",
+      "npm or yarn package manager",
+      "Git for version control",
+      "A modern code editor like VS Code",
+    ],
+    steps: [
+      {
+        id: 1,
+        title: "Clone the Repository",
+        subtitle: "Start by cloning the project to your local machine",
+        language: "BASH",
+        code: `git clone https://github.com/your-org/${projectFolder}.git`,
+        note: "This will create a new directory with all the project files.",
+      },
+      {
+        id: 2,
+        title: "Install Dependencies",
+        subtitle: "Navigate to the project and install required packages",
+        language: "BASH",
+        code: `cd ${projectFolder}\nnpm install`,
+        note: "Tip: You can also use yarn install or pnpm install.",
+      },
+      {
+        id: 3,
+        title: "Start Development Server",
+        subtitle: "Run the local development server and preview the template",
+        language: "BASH",
+        code: "npm run dev",
+        note: "After running the command, open the local URL in your browser.",
+      },
+      {
+        id: 4,
+        title: "Customize Template Content",
+        subtitle: "Update text, images, colors, sections, and configuration",
+        language: "BASH",
+        code: "src/components\nsrc/pages\nsrc/assets",
+        note: `You can customize ${product.title} based on your brand, product, or client project.`,
+      },
+    ],
+  };
+};
 
 function ProductDetails({ onAddToCart }) {
   const { slug } = useParams();
   const navigate = useNavigate();
+
   const relatedSliderRef = useRef(null);
+  const scrollTimeoutRef = useRef(null);
 
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState("description");
+  const [activeDetailsTab, setActiveDetailsTab] = useState("description");
+  const [activeSupportTab, setActiveSupportTab] = useState("installation");
+  const [feedbackMode, setFeedbackMode] = useState("report");
+
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [visibleFeedbackCount, setVisibleFeedbackCount] = useState(4);
+
+  const [customFeedbacks, setCustomFeedbacks] = useState([]);
+  const [reviewRating, setReviewRating] = useState(3);
+
+  const [reportForm, setReportForm] = useState({
+    problemType: "",
+    severity: "Low",
+    subject: "",
+    description: "",
+  });
+
+  const [reviewForm, setReviewForm] = useState({
+    title: "",
+    review: "",
+  });
+
+  const [contactForm, setContactForm] = useState({
+    fullName: "",
+    email: "",
+    subject: "Template customization",
+    message: "",
+  });
+
+  const [formMessage, setFormMessage] = useState("");
+
+  const [relatedGroupSize, setRelatedGroupSize] = useState(3);
+  const [activeRelatedGroup, setActiveRelatedGroup] = useState(0);
 
   const product = useMemo(() => {
     const normalizedSlug = normalizeText(slug);
 
     return (
-      products.find((item) => item.slug === slug) ||
       products.find((item) => normalizeText(item.slug) === normalizedSlug) ||
+      products.find((item) =>
+        Array.isArray(item.slugAliases)
+          ? item.slugAliases.some(
+              (alias) => normalizeText(alias) === normalizedSlug
+            )
+          : false
+      ) ||
       null
     );
   }, [slug]);
@@ -86,6 +175,57 @@ function ProductDetails({ onAddToCart }) {
     return [...matchedProducts, ...extraProducts].slice(0, 10);
   }, [product]);
 
+  useEffect(() => {
+    const updateRelatedGroupSize = () => {
+      const width = window.innerWidth;
+
+      if (width >= 1200) {
+        setRelatedGroupSize(3);
+      } else if (width >= 768) {
+        setRelatedGroupSize(2);
+      } else {
+        setRelatedGroupSize(1);
+      }
+    };
+
+    updateRelatedGroupSize();
+    window.addEventListener("resize", updateRelatedGroupSize);
+
+    return () => {
+      window.removeEventListener("resize", updateRelatedGroupSize);
+    };
+  }, []);
+
+  useEffect(() => {
+    setQuantity(1);
+    setActiveDetailsTab("description");
+    setActiveSupportTab("installation");
+    setFeedbackMode("report");
+    setVisibleFeedbackCount(4);
+    setCustomFeedbacks([]);
+    setFormMessage("");
+    setReviewRating(3);
+    setActiveRelatedGroup(0);
+
+    if (relatedSliderRef.current) {
+      relatedSliderRef.current.scrollTo({
+        left: 0,
+        behavior: "auto",
+      });
+    }
+  }, [slug]);
+
+  useEffect(() => {
+    if (relatedSliderRef.current) {
+      relatedSliderRef.current.scrollTo({
+        left: 0,
+        behavior: "auto",
+      });
+    }
+
+    setActiveRelatedGroup(0);
+  }, [relatedGroupSize, relatedProducts.length]);
+
   if (!product) {
     return (
       <main className="product-details-page">
@@ -102,25 +242,116 @@ function ProductDetails({ onAddToCart }) {
   }
 
   const productSku = `TPL-${String(product.id).padStart(3, "0")}`;
-
+  const discount = Number(product.discountPercent || product.discount || 18);
   const oldPrice = Number(
-    product.oldPrice || product.price + product.price * 0.18
-  );
-
-  const discount = Math.max(
-    1,
-    Math.round(((oldPrice - product.price) / oldPrice) * 100)
+    product.oldPrice || product.price / (1 - discount / 100)
   );
 
   const ratingStars = Array.from({ length: 5 }).map((_, index) => index + 1);
 
-  const feedbacks =
+  const defaultFeedbacks =
     product.feedbacks ||
     product.reviews ||
     product.customerFeedback ||
     getFallbackFeedbacks(product);
 
+  const feedbacks = [...customFeedbacks, ...defaultFeedbacks];
   const visibleFeedbacks = feedbacks.slice(0, visibleFeedbackCount);
+
+  const installationGuide =
+    product.installationGuide || getFallbackInstallation(product);
+
+  const relatedDotCount = Math.max(
+    1,
+    Math.ceil(relatedProducts.length / relatedGroupSize)
+  );
+
+  const getRelatedCardDistance = () => {
+    const slider = relatedSliderRef.current;
+    const card = slider?.querySelector(".details-related-card");
+
+    if (!slider || !card) return 0;
+
+    const sliderStyle = window.getComputedStyle(slider);
+    const gap =
+      Number.parseFloat(sliderStyle.columnGap || sliderStyle.gap) || 22;
+
+    return card.offsetWidth + gap;
+  };
+
+  const getRelatedTargetCardIndex = (groupIndex) => {
+    const lastStartIndex = Math.max(
+      0,
+      relatedProducts.length - relatedGroupSize
+    );
+
+    const targetIndex = groupIndex * relatedGroupSize;
+
+    return Math.min(targetIndex, lastStartIndex);
+  };
+
+  const scrollToRelatedGroup = (groupIndex) => {
+    const slider = relatedSliderRef.current;
+    const distance = getRelatedCardDistance();
+
+    if (!slider || !distance) return;
+
+    const safeGroupIndex = Math.max(
+      0,
+      Math.min(groupIndex, relatedDotCount - 1)
+    );
+
+    const targetCardIndex = getRelatedTargetCardIndex(safeGroupIndex);
+    const targetLeft = targetCardIndex * distance;
+    const maxLeft = slider.scrollWidth - slider.clientWidth;
+
+    slider.scrollTo({
+      left: Math.min(targetLeft, maxLeft),
+      behavior: "smooth",
+    });
+
+    setActiveRelatedGroup(safeGroupIndex);
+  };
+
+  const handleRelatedSlide = (direction) => {
+    const nextGroup =
+      direction === "next" ? activeRelatedGroup + 1 : activeRelatedGroup - 1;
+
+    const safeNextGroup =
+      nextGroup < 0
+        ? relatedDotCount - 1
+        : nextGroup > relatedDotCount - 1
+        ? 0
+        : nextGroup;
+
+    scrollToRelatedGroup(safeNextGroup);
+  };
+
+  const handleRelatedScroll = () => {
+    const slider = relatedSliderRef.current;
+
+    if (!slider) return;
+
+    window.clearTimeout(scrollTimeoutRef.current);
+
+    scrollTimeoutRef.current = window.setTimeout(() => {
+      const maxLeft = slider.scrollWidth - slider.clientWidth;
+
+      if (maxLeft <= 0) {
+        setActiveRelatedGroup(0);
+        return;
+      }
+
+      const progress = slider.scrollLeft / maxLeft;
+      const groupIndex = Math.round(progress * (relatedDotCount - 1));
+      const safeGroupIndex = Math.max(
+        0,
+        Math.min(groupIndex, relatedDotCount - 1)
+      );
+
+      setActiveRelatedGroup(safeGroupIndex);
+    }, 60);
+  };
 
   const handleQuantityMinus = () => {
     setQuantity((current) => Math.max(1, current - 1));
@@ -141,7 +372,6 @@ function ProductDetails({ onAddToCart }) {
 
   const handleBuyNow = () => {
     handleAddToCart();
-    console.log("Buy now:", product);
   };
 
   const handleRelatedClick = (item) => {
@@ -160,21 +390,69 @@ function ProductDetails({ onAddToCart }) {
     setVisibleFeedbackCount((current) => current + 4);
   };
 
-  const handleRelatedSlide = (direction) => {
-    const slider = relatedSliderRef.current;
+  const handleCopyCode = async (code) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setFormMessage("Command copied successfully.");
+    } catch {
+      setFormMessage("Copy failed. Please copy manually.");
+    }
+  };
 
-    if (!slider) return;
+  const handleReportSubmit = (event) => {
+    event.preventDefault();
 
-    const card = slider.querySelector(".details-related-card");
-    const sliderStyle = window.getComputedStyle(slider);
-    const gap =
-      Number.parseFloat(sliderStyle.columnGap || sliderStyle.gap) || 22;
+    setFormMessage(
+      "Your report has been submitted. The seller will review this issue soon."
+    );
 
-    const scrollAmount = card ? card.offsetWidth + gap : 320;
+    setReportForm({
+      problemType: "",
+      severity: "Low",
+      subject: "",
+      description: "",
+    });
+  };
 
-    slider.scrollBy({
-      left: direction === "next" ? scrollAmount : -scrollAmount,
-      behavior: "smooth",
+  const handleReviewSubmit = (event) => {
+    event.preventDefault();
+
+    if (!reviewForm.review.trim()) {
+      setFormMessage("Please write your review before submitting.");
+      return;
+    }
+
+    const newFeedback = {
+      id: `custom-${Date.now()}`,
+      name: "You",
+      time: "Just now",
+      rating: reviewRating,
+      title: reviewForm.title || "Customer review",
+      comment: reviewForm.review,
+    };
+
+    setCustomFeedbacks((current) => [newFeedback, ...current]);
+    setReviewForm({
+      title: "",
+      review: "",
+    });
+
+    setActiveDetailsTab("feedback");
+    setFormMessage("Your review has been added to Customer Feedback.");
+  };
+
+  const handleContactSubmit = (event) => {
+    event.preventDefault();
+
+    setFormMessage(
+      "Your message has been prepared for the seller. Seller contact functionality can be connected later."
+    );
+
+    setContactForm({
+      fullName: "",
+      email: "",
+      subject: "Template customization",
+      message: "",
     });
   };
 
@@ -192,7 +470,11 @@ function ProductDetails({ onAddToCart }) {
       <section className="details-main-section">
         <div className="container-fluid details-container">
           <div className="details-breadcrumb">
-            <button type="button" onClick={() => navigate("/")}>
+            <button
+              type="button"
+              aria-label="Go to homepage"
+              onClick={() => navigate("/")}
+            >
               <ion-icon name="home-outline"></ion-icon>
             </button>
 
@@ -236,24 +518,15 @@ function ProductDetails({ onAddToCart }) {
             <div className="details-summary-area">
               <div className="details-title-row">
                 <h1>{product.title}</h1>
-
-                <span className="details-stock-badge">
-                  <ion-icon name="checkmark-circle"></ion-icon>
-                  Available
-                </span>
               </div>
 
               <div className="details-rating-row">
                 <div className="details-stars">{renderStars(product.rating)}</div>
 
                 <span>{product.rating}.0 Rating</span>
-
                 <em></em>
-
                 <span>{product.sales || "88 Sales"}</span>
-
                 <em></em>
-
                 <span>SKU: {productSku}</span>
               </div>
 
@@ -305,50 +578,62 @@ function ProductDetails({ onAddToCart }) {
               <div className="details-divider"></div>
 
               <div className="details-action-panel">
-                <div className="details-quantity-control">
-                  <button type="button" onClick={handleQuantityMinus}>
-                    <ion-icon name="remove-outline"></ion-icon>
+                <div className="details-action-row top-action">
+                  <div className="details-quantity-control">
+                    <button
+                      type="button"
+                      aria-label="Decrease quantity"
+                      onClick={handleQuantityMinus}
+                    >
+                      <ion-icon name="remove-outline"></ion-icon>
+                    </button>
+
+                    <span>{quantity}</span>
+
+                    <button
+                      type="button"
+                      aria-label="Increase quantity"
+                      onClick={handleQuantityPlus}
+                    >
+                      <ion-icon name="add-outline"></ion-icon>
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="details-add-cart-btn"
+                    onClick={handleAddToCart}
+                  >
+                    Add to Cart
+                    <ion-icon name="cart-outline"></ion-icon>
                   </button>
 
-                  <span>{quantity}</span>
-
-                  <button type="button" onClick={handleQuantityPlus}>
-                    <ion-icon name="add-outline"></ion-icon>
+                  <button
+                    type="button"
+                    className={
+                      isWishlisted
+                        ? "details-wishlist-btn active"
+                        : "details-wishlist-btn"
+                    }
+                    onClick={() => setIsWishlisted((current) => !current)}
+                    aria-label="Add to wishlist"
+                  >
+                    <ion-icon
+                      name={isWishlisted ? "heart" : "heart-outline"}
+                    ></ion-icon>
                   </button>
                 </div>
 
-                <button
-                  type="button"
-                  className="details-add-cart-btn"
-                  onClick={handleAddToCart}
-                >
-                  Add to Cart
-                  <ion-icon name="cart-outline"></ion-icon>
-                </button>
-
-                <button
-                  type="button"
-                  className={
-                    isWishlisted
-                      ? "details-wishlist-btn active"
-                      : "details-wishlist-btn"
-                  }
-                  onClick={() => setIsWishlisted((current) => !current)}
-                  aria-label="Add to wishlist"
-                >
-                  <ion-icon
-                    name={isWishlisted ? "heart" : "heart-outline"}
-                  ></ion-icon>
-                </button>
+                <div className="details-action-row bottom-action">
+                  <button
+                    type="button"
+                    className="details-buy-now-btn"
+                    onClick={handleBuyNow}
+                  >
+                    Buy Now
+                  </button>
+                </div>
               </div>
-
-              <button
-                type="button"
-                className="details-buy-now-btn"
-                onClick={handleBuyNow}
-              >
-                Buy Now
-              </button>
 
               <div className="details-divider details-meta-divider"></div>
 
@@ -392,7 +677,7 @@ function ProductDetails({ onAddToCart }) {
                 <p>
                   <strong>Tags:</strong>
 
-                  {product.tags.map((tag) => (
+                  {(product.tags || []).map((tag) => (
                     <span key={tag}>{tag}</span>
                   ))}
                 </p>
@@ -404,36 +689,36 @@ function ProductDetails({ onAddToCart }) {
             <div className="details-tabs-nav">
               <button
                 type="button"
-                className={activeTab === "description" ? "active" : ""}
-                onClick={() => setActiveTab("description")}
+                className={activeDetailsTab === "description" ? "active" : ""}
+                onClick={() => setActiveDetailsTab("description")}
               >
                 Descriptions
               </button>
 
               <button
                 type="button"
-                className={activeTab === "information" ? "active" : ""}
-                onClick={() => setActiveTab("information")}
+                className={activeDetailsTab === "information" ? "active" : ""}
+                onClick={() => setActiveDetailsTab("information")}
               >
                 Additional Information
               </button>
 
               <button
                 type="button"
-                className={activeTab === "feedback" ? "active" : ""}
-                onClick={() => setActiveTab("feedback")}
+                className={activeDetailsTab === "feedback" ? "active" : ""}
+                onClick={() => setActiveDetailsTab("feedback")}
               >
                 Customer Feedback
               </button>
             </div>
 
-            {activeTab === "description" && (
+            {activeDetailsTab === "description" && (
               <div className="details-tab-content details-description-grid">
                 <div className="details-description-left">
                   <p>{product.documentation}</p>
 
                   <ul>
-                    {product.features.map((feature) => (
+                    {(product.features || []).map((feature) => (
                       <li key={feature}>
                         <ion-icon name="checkmark-circle"></ion-icon>
                         {feature}
@@ -485,7 +770,7 @@ function ProductDetails({ onAddToCart }) {
               </div>
             )}
 
-            {activeTab === "information" && (
+            {activeDetailsTab === "information" && (
               <div className="details-tab-content">
                 <div className="details-info-table">
                   <div>
@@ -520,7 +805,7 @@ function ProductDetails({ onAddToCart }) {
 
                   <div>
                     <strong>Included Pages</strong>
-                    <span>{product.includedPages.length} Pages</span>
+                    <span>{(product.includedPages || []).length} Pages</span>
                   </div>
 
                   <div>
@@ -533,7 +818,7 @@ function ProductDetails({ onAddToCart }) {
                   <h3>Included Pages</h3>
 
                   <ol>
-                    {product.includedPages.map((page) => (
+                    {(product.includedPages || []).map((page) => (
                       <li key={page}>{page}</li>
                     ))}
                   </ol>
@@ -541,7 +826,7 @@ function ProductDetails({ onAddToCart }) {
               </div>
             )}
 
-            {activeTab === "feedback" && (
+            {activeDetailsTab === "feedback" && (
               <div className="details-tab-content">
                 <div className="details-feedback-list-layout">
                   {visibleFeedbacks.map((feedback) => (
@@ -567,6 +852,7 @@ function ProductDetails({ onAddToCart }) {
                           {renderStars(feedback.rating || 5)}
                         </div>
 
+                        {feedback.title ? <h5>{feedback.title}</h5> : null}
                         <p>{feedback.comment}</p>
                       </div>
                     </article>
@@ -586,6 +872,408 @@ function ProductDetails({ onAddToCart }) {
             )}
           </div>
 
+          <div className="details-support-section">
+            <div className="details-support-card">
+              <div className="details-support-tabs">
+                <button
+                  type="button"
+                  className={activeSupportTab === "installation" ? "active" : ""}
+                  onClick={() => setActiveSupportTab("installation")}
+                >
+                  Installation Guide
+                </button>
+
+                <button
+                  type="button"
+                  className={activeSupportTab === "feedback" ? "active" : ""}
+                  onClick={() => setActiveSupportTab("feedback")}
+                >
+                  Product Feedback
+                </button>
+
+                <button
+                  type="button"
+                  className={activeSupportTab === "contact" ? "active" : ""}
+                  onClick={() => setActiveSupportTab("contact")}
+                >
+                  Contact Seller
+                </button>
+              </div>
+
+              <div className="details-support-content">
+                {formMessage ? (
+                  <div className="details-form-message">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    {formMessage}
+                  </div>
+                ) : null}
+
+                {activeSupportTab === "installation" && (
+                  <div className="details-installation-content">
+                    <div className="details-prerequisite-box">
+                      <h3>Prerequisites</h3>
+
+                      <ul>
+                        {installationGuide.prerequisites.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="details-installation-steps">
+                      {installationGuide.steps.map((step) => (
+                        <div className="details-install-step" key={step.id}>
+                          <div className="details-step-number">{step.id}</div>
+
+                          <div className="details-step-content">
+                            <h3>{step.title}</h3>
+                            <p>{step.subtitle}</p>
+
+                            <div className="details-code-card">
+                              <div className="details-code-head">
+                                <span>{step.language}</span>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopyCode(step.code)}
+                                >
+                                  <ion-icon name="copy-outline"></ion-icon>
+                                  Copy
+                                </button>
+                              </div>
+
+                              <pre>
+                                <code>{step.code}</code>
+                              </pre>
+                            </div>
+
+                            {step.note ? (
+                              <div className="details-code-note">{step.note}</div>
+                            ) : null}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeSupportTab === "feedback" && (
+                  <div className="details-product-feedback-content">
+                    <div className="details-feedback-mode-row">
+                      <label>
+                        <input
+                          type="radio"
+                          name="feedbackMode"
+                          checked={feedbackMode === "report"}
+                          onChange={() => setFeedbackMode("report")}
+                        />
+                        <span></span>
+                        Report issue
+                      </label>
+
+                      <label>
+                        <input
+                          type="radio"
+                          name="feedbackMode"
+                          checked={feedbackMode === "review"}
+                          onChange={() => setFeedbackMode("review")}
+                        />
+                        <span></span>
+                        Review
+                      </label>
+                    </div>
+
+                    {feedbackMode === "report" && (
+                      <form
+                        className="details-feedback-form"
+                        onSubmit={handleReportSubmit}
+                      >
+                        <div className="details-form-left">
+                          <label className="details-input-group">
+                            <span>Problem Type</span>
+
+                            <input
+                              type="text"
+                              placeholder="Search products"
+                              value={reportForm.problemType}
+                              onChange={(event) =>
+                                setReportForm((current) => ({
+                                  ...current,
+                                  problemType: event.target.value,
+                                }))
+                              }
+                            />
+                          </label>
+
+                          <div className="details-severity-group">
+                            <span>Severity Level</span>
+
+                            <div>
+                              {["Low", "Mid", "High", "Critical"].map(
+                                (level) => (
+                                  <label key={level}>
+                                    <input
+                                      type="radio"
+                                      name="severity"
+                                      checked={reportForm.severity === level}
+                                      onChange={() =>
+                                        setReportForm((current) => ({
+                                          ...current,
+                                          severity: level,
+                                        }))
+                                      }
+                                    />
+                                    <span></span>
+                                    {level}
+                                  </label>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="details-form-right">
+                          <label className="details-input-group">
+                            <span>Subject</span>
+
+                            <input
+                              type="text"
+                              placeholder="Search products"
+                              value={reportForm.subject}
+                              onChange={(event) =>
+                                setReportForm((current) => ({
+                                  ...current,
+                                  subject: event.target.value,
+                                }))
+                              }
+                            />
+                          </label>
+
+                          <label className="details-input-group">
+                            <span>Detailed Description *</span>
+
+                            <textarea
+                              placeholder="Search products"
+                              value={reportForm.description}
+                              onChange={(event) =>
+                                setReportForm((current) => ({
+                                  ...current,
+                                  description: event.target.value,
+                                }))
+                              }
+                              required
+                            ></textarea>
+                          </label>
+
+                          <button type="submit" className="details-submit-btn">
+                            Submit Report
+                          </button>
+                        </div>
+                      </form>
+                    )}
+
+                    {feedbackMode === "review" && (
+                      <form
+                        className="details-feedback-form"
+                        onSubmit={handleReviewSubmit}
+                      >
+                        <div className="details-form-left">
+                          <div className="details-review-rating-box">
+                            <span>Ratings</span>
+
+                            <div>
+                              <div className="details-review-stars">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <button
+                                    type="button"
+                                    key={star}
+                                    className={
+                                      star <= reviewRating ? "active" : ""
+                                    }
+                                    onClick={() => setReviewRating(star)}
+                                    aria-label={`Rate ${star} stars`}
+                                  >
+                                    <ion-icon
+                                      name={
+                                        star <= reviewRating
+                                          ? "star"
+                                          : "star-outline"
+                                      }
+                                    ></ion-icon>
+                                  </button>
+                                ))}
+                              </div>
+
+                              <p>You rated : {reviewRating} stars</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="details-form-right">
+                          <label className="details-input-group">
+                            <span>Review Title</span>
+
+                            <input
+                              type="text"
+                              value={reviewForm.title}
+                              onChange={(event) =>
+                                setReviewForm((current) => ({
+                                  ...current,
+                                  title: event.target.value,
+                                }))
+                              }
+                            />
+                          </label>
+
+                          <label className="details-input-group">
+                            <span>Your Review *</span>
+
+                            <textarea
+                              value={reviewForm.review}
+                              onChange={(event) =>
+                                setReviewForm((current) => ({
+                                  ...current,
+                                  review: event.target.value,
+                                }))
+                              }
+                              required
+                            ></textarea>
+                          </label>
+
+                          <button type="submit" className="details-submit-btn">
+                            Submit Review
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                )}
+
+                {activeSupportTab === "contact" && (
+                  <div className="details-contact-content">
+                    <div className="details-seller-info">
+                      <div>
+                        <span>
+                          <ion-icon name="mail-outline"></ion-icon>
+                        </span>
+
+                        <p>Email</p>
+                        <strong>
+                          {product.sellerEmail || "support@example.com"}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>
+                          <ion-icon name="call-outline"></ion-icon>
+                        </span>
+
+                        <p>Phone</p>
+                        <strong>{product.sellerPhone || "+1 (555) 123-4567"}</strong>
+                      </div>
+
+                      <div>
+                        <span>
+                          <ion-icon name="mail-outline"></ion-icon>
+                        </span>
+
+                        <p>Email</p>
+                        <strong>
+                          {product.supportEmail || "support@example.com"}
+                        </strong>
+                      </div>
+                    </div>
+
+                    <form
+                      className="details-contact-form"
+                      onSubmit={handleContactSubmit}
+                    >
+                      <div className="details-contact-grid">
+                        <label className="details-input-group">
+                          <span>Full Name</span>
+
+                          <input
+                            type="text"
+                            value={contactForm.fullName}
+                            onChange={(event) =>
+                              setContactForm((current) => ({
+                                ...current,
+                                fullName: event.target.value,
+                              }))
+                            }
+                            required
+                          />
+                        </label>
+
+                        <label className="details-input-group">
+                          <span>Email Address</span>
+
+                          <input
+                            type="email"
+                            value={contactForm.email}
+                            onChange={(event) =>
+                              setContactForm((current) => ({
+                                ...current,
+                                email: event.target.value,
+                              }))
+                            }
+                            required
+                          />
+                        </label>
+                      </div>
+
+                      <label className="details-input-group">
+                        <span>Subject</span>
+
+                        <select
+                          value={contactForm.subject}
+                          onChange={(event) =>
+                            setContactForm((current) => ({
+                              ...current,
+                              subject: event.target.value,
+                            }))
+                          }
+                        >
+                          <option value="Template customization">
+                            Template customization
+                          </option>
+                          <option value="Installation help">
+                            Installation help
+                          </option>
+                          <option value="License question">
+                            License question
+                          </option>
+                          <option value="Pre-sale question">
+                            Pre-sale question
+                          </option>
+                        </select>
+                      </label>
+
+                      <label className="details-input-group">
+                        <span>Message</span>
+
+                        <textarea
+                          value={contactForm.message}
+                          onChange={(event) =>
+                            setContactForm((current) => ({
+                              ...current,
+                              message: event.target.value,
+                            }))
+                          }
+                          required
+                        ></textarea>
+                      </label>
+
+                      <button type="submit" className="details-submit-btn">
+                        Submit Review
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
           {relatedProducts.length > 0 && (
             <div className="details-related-section">
               <div className="details-related-heading-row">
@@ -593,50 +1281,70 @@ function ProductDetails({ onAddToCart }) {
                   <span>RELATED PRODUCTS</span>
                   <h2>More templates you may like</h2>
                 </div>
-
-                <div className="details-related-controls">
-                  <button
-                    type="button"
-                    onClick={() => handleRelatedSlide("prev")}
-                    aria-label="Previous related product"
-                  >
-                    <ion-icon name="chevron-back-outline"></ion-icon>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleRelatedSlide("next")}
-                    aria-label="Next related product"
-                  >
-                    <ion-icon name="chevron-forward-outline"></ion-icon>
-                  </button>
-                </div>
               </div>
 
-              <div className="details-related-slider" ref={relatedSliderRef}>
-                {relatedProducts.map((item) => (
-                  <article
-                    className="details-related-card"
-                    key={item.id}
-                    onClick={() => handleRelatedClick(item)}
-                  >
-                    <div className="details-related-img">
-                      <img src={item.image} alt={item.title} />
-                    </div>
+              <div className="details-related-slider-shell">
+                <button
+                  type="button"
+                  className="details-related-mobile-control prev"
+                  onClick={() => handleRelatedSlide("prev")}
+                  aria-label="Previous related product"
+                >
+                  <ion-icon name="chevron-back-outline"></ion-icon>
+                </button>
 
-                    <div className="details-related-content">
-                      <span>{item.group}</span>
-                      <h3>{item.title}</h3>
-                      <p>by {item.author}</p>
-
-                      <div>
-                        <strong>${item.price}</strong>
-                        <small>{item.subCategory}</small>
+                <div
+                  className="details-related-slider"
+                  ref={relatedSliderRef}
+                  onScroll={handleRelatedScroll}
+                >
+                  {relatedProducts.map((item) => (
+                    <article
+                      className="details-related-card"
+                      key={item.id}
+                      onClick={() => handleRelatedClick(item)}
+                    >
+                      <div className="details-related-img">
+                        <img src={item.image} alt={item.title} />
                       </div>
-                    </div>
-                  </article>
-                ))}
+
+                      <div className="details-related-content">
+                        <span>{item.group}</span>
+                        <h3>{item.title}</h3>
+                        <p>by {item.author}</p>
+
+                        <div>
+                          <strong>${item.price}</strong>
+                          <small>{item.subCategory}</small>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  className="details-related-mobile-control next"
+                  onClick={() => handleRelatedSlide("next")}
+                  aria-label="Next related product"
+                >
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </button>
               </div>
+
+              {relatedDotCount > 1 && (
+                <div className="details-related-dots">
+                  {Array.from({ length: relatedDotCount }).map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className={activeRelatedGroup === index ? "active" : ""}
+                      onClick={() => scrollToRelatedGroup(index)}
+                      aria-label={`Go to related product group ${index + 1}`}
+                    ></button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

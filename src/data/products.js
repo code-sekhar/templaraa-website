@@ -3,95 +3,8 @@ const getProductImage = (imageName) => {
     .href;
 };
 
-const productDescriptions = {
-  Ecommerce:
-    "A conversion-focused ecommerce template designed for product selling, online stores, checkout flows, shopping experiences, and modern digital storefronts.",
-  Business:
-    "A professional business website template built for companies, consultants, agencies, service providers, corporate profiles, and service-based businesses.",
-  Entertainment:
-    "A dynamic entertainment template designed for events, media platforms, streaming websites, magazines, music pages, and content-driven experiences.",
-  Personal:
-    "A clean personal website template for creators, writers, freelancers, resume profiles, personal brands, blogs, and creator-focused online presence.",
-  Portfolio:
-    "A modern portfolio template created for designers, developers, photographers, agencies, studios, and creative professionals who need a strong showcase.",
-  Studio:
-    "A premium studio template for design studios, branding agencies, creative teams, photography websites, architecture studios, and showcase pages.",
-  Technology:
-    "A technology-focused template for SaaS, AI tools, startups, dashboards, apps, software platforms, and modern product landing pages.",
-  Corporate:
-    "A polished corporate template for enterprises, organizations, business teams, service firms, company profiles, and professional websites.",
-  Retails:
-    "A retail-focused template designed for stores, product catalogs, POS systems, fashion shops, local retailers, ecommerce brands, and marketplace experiences.",
-};
-
-const productFeatures = {
-  Ecommerce: [
-    "Responsive ecommerce layout",
-    "Product listing and detail-ready structure",
-    "Cart and checkout focused UI",
-    "Conversion-focused CTA sections",
-    "Clean product showcase cards",
-  ],
-  Business: [
-    "Professional business homepage",
-    "Service and company profile sections",
-    "Lead-focused call to action",
-    "Team and testimonial blocks",
-    "Responsive business layout",
-  ],
-  Entertainment: [
-    "Media-focused hero section",
-    "Event and content card layouts",
-    "Streaming or magazine-ready sections",
-    "Responsive entertainment design",
-    "High-impact visual presentation",
-  ],
-  Personal: [
-    "Personal profile sections",
-    "Resume and creator-friendly layout",
-    "About and contact blocks",
-    "Clean readable typography",
-    "Responsive personal website design",
-  ],
-  Portfolio: [
-    "Project showcase grid",
-    "Case study-ready sections",
-    "Creative portfolio layout",
-    "About and service blocks",
-    "Responsive visual presentation",
-  ],
-  Studio: [
-    "Studio homepage layout",
-    "Creative showcase sections",
-    "Branding and gallery blocks",
-    "Premium visual hierarchy",
-    "Responsive studio presentation",
-  ],
-  Technology: [
-    "Modern tech landing page",
-    "Feature explanation sections",
-    "Dashboard or product preview blocks",
-    "SaaS-ready page structure",
-    "Responsive technology UI",
-  ],
-  Corporate: [
-    "Corporate homepage sections",
-    "Company profile layout",
-    "Service and team blocks",
-    "Professional CTA sections",
-    "Responsive enterprise design",
-  ],
-  Retails: [
-    "Retail product showcase",
-    "Store and category sections",
-    "Shopping-focused layout",
-    "Inventory or POS-friendly blocks",
-    "Responsive retail interface",
-  ],
-};
-
 const productTagsByGroup = {
-  Ecommerce: ["html", "react", "checkout"],
+  Ecommerce: ["ecommerce", "checkout", "store"],
   Business: ["business", "agency", "landing"],
   Entertainment: ["media", "event", "streaming"],
   Personal: ["resume", "profile", "personal"],
@@ -99,7 +12,73 @@ const productTagsByGroup = {
   Studio: ["studio", "branding", "creative"],
   Technology: ["saas", "dashboard", "react"],
   Corporate: ["corporate", "company", "business"],
-  Retails: ["retail", "shopify", "store"],
+  Retails: ["retail", "store", "shop"],
+};
+
+const productFeatures = {
+  Ecommerce: [
+    "Conversion-focused product showcase sections",
+    "Cart, checkout, and order journey ready structure",
+    "Responsive ecommerce grid and product card system",
+    "Clean pricing, review, and CTA presentation",
+    "Reusable shop blocks for faster customization",
+  ],
+  Business: [
+    "Professional service-based homepage layout",
+    "Lead generation sections with clear CTA flow",
+    "Company profile, services, and case study blocks",
+    "Team, testimonial, and pricing-ready structure",
+    "Responsive business layout for agency projects",
+  ],
+  Entertainment: [
+    "High-impact content and media presentation",
+    "Event, streaming, and magazine-ready card layouts",
+    "Visual-first sections for rich browsing experiences",
+    "Category, details, and featured content blocks",
+    "Responsive entertainment-focused page structure",
+  ],
+  Personal: [
+    "Personal profile and resume-ready sections",
+    "Readable typography for blogs and creator pages",
+    "Portfolio, contact, and about blocks included",
+    "Simple structure for personal brand customization",
+    "Responsive design for creator-focused websites",
+  ],
+  Portfolio: [
+    "Project showcase grid with case study flow",
+    "Creative layout for work presentation",
+    "About, service, and testimonial sections",
+    "Visual hierarchy built for designer portfolios",
+    "Responsive portfolio browsing experience",
+  ],
+  Studio: [
+    "Premium studio homepage presentation",
+    "Gallery, showcase, and branding blocks",
+    "Project detail sections for creative work",
+    "Elegant spacing system and visual hierarchy",
+    "Responsive structure for studio websites",
+  ],
+  Technology: [
+    "Modern SaaS and software landing structure",
+    "Feature, pricing, and dashboard preview blocks",
+    "Product-focused CTA and explanation sections",
+    "Responsive layout for tech startup websites",
+    "Clean component structure for digital products",
+  ],
+  Corporate: [
+    "Corporate homepage and company profile sections",
+    "Leadership, services, and case study blocks",
+    "Professional CTA flow for enterprise websites",
+    "Clean business presentation with strong hierarchy",
+    "Responsive corporate layout system",
+  ],
+  Retails: [
+    "Retail product and collection showcase sections",
+    "Store, catalog, and shopping-focused layout",
+    "Inventory, POS, or product category ready blocks",
+    "Responsive retail interface for product brands",
+    "Clean storefront structure with strong CTA flow",
+  ],
 };
 
 const includedPagesByGroup = {
@@ -213,17 +192,360 @@ const includedPagesByGroup = {
   ],
 };
 
+const uniquePagesBySubCategory = {
+  "Product Pages": [
+    "Homepage",
+    "Product Grid",
+    "Product Details",
+    "Cart Drawer",
+    "Checkout",
+    "Wishlist",
+    "Customer Account",
+    "Order Tracking",
+  ],
+  "Shop Layouts": [
+    "Homepage",
+    "Shop Listing",
+    "Collection Details",
+    "Product Preview",
+    "Cart Page",
+    "Checkout",
+    "Offer Page",
+    "Account Page",
+  ],
+  "Online Store": [
+    "Homepage",
+    "Shop Page",
+    "Product Details",
+    "Cart Page",
+    "Checkout",
+    "Order Success",
+    "Customer Account",
+    "Track Order",
+    "Contact",
+  ],
+  WooCommerce: [
+    "Homepage",
+    "Shop Archive",
+    "Single Product",
+    "Cart",
+    "Checkout",
+    "My Account",
+    "Wishlist",
+    "Blog",
+    "Contact",
+  ],
+  Marketplace: [
+    "Homepage",
+    "Vendor Listing",
+    "Vendor Profile",
+    "Product Listing",
+    "Product Details",
+    "Seller Dashboard",
+    "Buyer Account",
+    "Checkout",
+    "Support",
+  ],
+  Corporate: [
+    "Homepage",
+    "Company Profile",
+    "Services",
+    "Service Details",
+    "Leadership",
+    "Case Studies",
+    "Careers",
+    "Contact",
+  ],
+  Consulting: [
+    "Homepage",
+    "About Consulting",
+    "Services",
+    "Service Details",
+    "Pricing",
+    "Case Studies",
+    "Testimonials",
+    "Contact",
+  ],
+  Startup: [
+    "Homepage",
+    "Startup Story",
+    "Solutions",
+    "Features",
+    "Pricing",
+    "Investors",
+    "Team",
+    "Contact",
+  ],
+  "Service Agency": [
+    "Homepage",
+    "Services",
+    "Service Details",
+    "Portfolio",
+    "Pricing",
+    "Testimonials",
+    "Contact",
+  ],
+  "Agency Landing": [
+    "Homepage",
+    "Services",
+    "Portfolio",
+    "Case Study",
+    "Pricing",
+    "Team",
+    "Contact",
+  ],
+  "Media Pages": [
+    "Homepage",
+    "Trending",
+    "Media Category",
+    "Article Details",
+    "Video Page",
+    "Magazine",
+    "Newsletter",
+    "Contact",
+  ],
+  Streaming: [
+    "Homepage",
+    "Movie Listing",
+    "Movie Details",
+    "Watch Page",
+    "Categories",
+    "Pricing",
+    "Account",
+  ],
+  "Event Landing": [
+    "Homepage",
+    "Event Details",
+    "Schedule",
+    "Speakers",
+    "Tickets",
+    "Gallery",
+    "Contact",
+  ],
+  Gaming: [
+    "Homepage",
+    "Community",
+    "Game Details",
+    "Leaderboard",
+    "News",
+    "Members",
+    "Contact",
+  ],
+  Resume: [
+    "Homepage",
+    "About Me",
+    "Resume",
+    "Skills",
+    "Portfolio",
+    "Experience",
+    "Contact",
+  ],
+  Blog: [
+    "Homepage",
+    "Blog Listing",
+    "Single Blog",
+    "Author Page",
+    "Categories",
+    "Newsletter",
+    "Contact",
+  ],
+  Creative: [
+    "Homepage",
+    "Creative Works",
+    "Project Showcase",
+    "Case Study",
+    "Services",
+    "About",
+    "Contact",
+  ],
+  "Personal Portfolio": [
+    "Homepage",
+    "About Me",
+    "Portfolio",
+    "Project Details",
+    "Resume",
+    "Blog",
+    "Contact",
+  ],
+  "Design Studio": [
+    "Homepage",
+    "Studio About",
+    "Services",
+    "Projects",
+    "Project Details",
+    "Gallery",
+    "Booking",
+    "Contact",
+  ],
+  Branding: [
+    "Homepage",
+    "Brand Strategy",
+    "Identity Work",
+    "Case Studies",
+    "Services",
+    "Team",
+    "Contact",
+  ],
+  Photography: [
+    "Homepage",
+    "Gallery",
+    "Portfolio Details",
+    "Booking",
+    "Pricing",
+    "About",
+    "Contact",
+  ],
+  SaaS: [
+    "Homepage",
+    "Features",
+    "Integrations",
+    "Pricing",
+    "Use Cases",
+    "Documentation",
+    "Contact",
+  ],
+  "AI Tools": [
+    "Homepage",
+    "AI Features",
+    "Tool Details",
+    "Pricing",
+    "Use Cases",
+    "Dashboard Preview",
+    "Contact",
+  ],
+  "Admin Dashboard": [
+    "Dashboard Overview",
+    "Analytics",
+    "Users",
+    "Reports",
+    "Revenue",
+    "Settings",
+    "Notifications",
+    "Profile",
+  ],
+  "SaaS Dashboard": [
+    "Dashboard",
+    "Analytics",
+    "Projects",
+    "Team",
+    "Billing",
+    "Settings",
+    "Reports",
+    "Help Center",
+  ],
+  "Finance Dashboard": [
+    "Dashboard",
+    "Transactions",
+    "Invoices",
+    "Analytics",
+    "Wallet",
+    "Reports",
+    "Settings",
+  ],
+};
+
+const productDiscountByGroup = {
+  Ecommerce: 24,
+  Business: 18,
+  Entertainment: 20,
+  Personal: 15,
+  Portfolio: 17,
+  Studio: 19,
+  Technology: 25,
+  Corporate: 16,
+  Retails: 21,
+};
+
+const extraPagesPool = [
+  "Style Guide",
+  "Components",
+  "Blog Details",
+  "Help Center",
+  "Legal Page",
+  "Dashboard Preview",
+  "Thank You Page",
+  "Archive Page",
+  "Changelog",
+  "Support Page",
+];
+
+const getProductDiscount = (product) => {
+  if (product.discountPercent) return Number(product.discountPercent);
+  if (product.discount) return Number(product.discount);
+
+  const baseDiscount = productDiscountByGroup[product.group] || 18;
+  const variation = Number(product.id) % 6;
+
+  return Math.min(36, baseDiscount + variation);
+};
+
+const getUniqueIncludedPages = (product) => {
+  const directPages = uniquePagesBySubCategory[product.subCategory];
+
+  if (directPages) {
+    return directPages;
+  }
+
+  const groupPages = includedPagesByGroup[product.group] || [
+    "Homepage",
+    "About",
+    "Services",
+    "Details",
+    "Contact",
+    "404 Page",
+  ];
+
+  const startIndex = Number(product.id) % 5;
+  const extraCount = (Number(product.id) % 3) + 1;
+  const selectedExtraPages = extraPagesPool.slice(
+    startIndex,
+    startIndex + extraCount
+  );
+
+  return [...groupPages.slice(0, 7 + extraCount), ...selectedExtraPages];
+};
+
+const getUniqueProductFeatures = (product) => {
+  const groupFeatures = productFeatures[product.group] || [
+    "Modern, professional design",
+    "Fully responsive layout",
+    "Easy customization",
+    "Fast-loading structure",
+    "Clean reusable sections",
+  ];
+
+  const uniqueFeaturePool = [
+    `${product.subCategory} focused section structure`,
+    `Optimized ${product.group.toLowerCase()} conversion flow`,
+    `Premium ${product.source.toLowerCase()} presentation style`,
+    "Reusable content blocks for faster customization",
+    "Clean spacing system with professional hierarchy",
+    "Mobile-first responsive component behavior",
+    "Product-ready CTA and preview sections",
+    "Flexible design blocks for client projects",
+    "Fast launch structure with organized content",
+  ];
+
+  const startIndex = Number(product.id) % 4;
+
+  return [
+    ...groupFeatures.slice(0, 3),
+    ...uniqueFeaturePool.slice(startIndex, startIndex + 3),
+  ];
+};
+
 const getProductShortDescription = (product) => {
-  return `A complete ${product.group} template with modern UI/UX, reusable sections, responsive layouts, product-ready components, and premium visual hierarchy.`;
+  return `${product.title} is a premium ${product.subCategory.toLowerCase()} template crafted for ${product.group.toLowerCase()} projects. It includes polished UI sections, responsive layouts, clean visual hierarchy, and conversion-focused blocks for a faster launch.`;
 };
 
 const getProductDocumentation = (product) => {
-  return `${product.title} is a modern, clean, and highly functional website template built for ${product.group.toLowerCase()} projects. This template provides a strong professional presence with structured layouts, polished visual sections, reusable components, and conversion-focused content blocks. It is designed to help businesses, creators, and digital teams launch faster without starting from scratch. The layout is fully responsive, easy to customize, and suitable for production-ready websites. Perfect for ${product.subCategory.toLowerCase()} focused projects that need a reliable, premium, and conversion-driven digital experience.`;
+  return `${product.title} is built as a complete ${product.subCategory.toLowerCase()} website solution for ${product.group.toLowerCase()} use cases. The design focuses on clear content presentation, smooth user flow, reusable sections, and professional spacing. Every section is structured to help users understand the product, explore features, compare value, and take action with confidence. This template works well for client projects, marketplace products, business launches, and production-ready digital experiences. It includes flexible page layouts, mobile responsive behavior, and organized content blocks so customization stays simple and scalable.`;
 };
 
 const createProduct = ({
   id,
   slug,
+  slugAliases = [],
   title,
   author,
   group,
@@ -235,6 +557,7 @@ const createProduct = ({
   badge = "",
   sales = "",
   oldPrice = "",
+  discountPercent = "",
   tags,
   description,
   documentation,
@@ -244,6 +567,7 @@ const createProduct = ({
   const productBase = {
     id,
     slug,
+    slugAliases,
     title,
     author,
     group,
@@ -258,39 +582,125 @@ const createProduct = ({
     sales,
   };
 
+  const finalDiscount = getProductDiscount({
+    ...productBase,
+    discountPercent,
+  });
+
   return {
     ...productBase,
-    oldPrice: oldPrice || Number((price + price * 0.18).toFixed(2)),
+    discountPercent: finalDiscount,
+    oldPrice:
+      oldPrice ||
+      Number((Number(price) / (1 - finalDiscount / 100)).toFixed(2)),
     tags: tags || productTagsByGroup[group] || ["html", "react", "template"],
     description: description || getProductShortDescription(productBase),
     documentation: documentation || getProductDocumentation(productBase),
-    features:
-      features ||
-      productFeatures[group] || [
-        "Modern, professional design",
-        "Fully responsive layout",
-        "Easy customization",
-        "Fast-loading structure",
-        "Clean reusable sections",
-      ],
-    includedPages:
-      includedPages ||
-      includedPagesByGroup[group] || [
-        "Homepage",
-        "About",
-        "Services",
-        "Details",
-        "Contact",
-        "404 Page",
-      ],
+    features: features || getUniqueProductFeatures(productBase),
+    includedPages: includedPages || getUniqueIncludedPages(productBase),
   };
 };
 
 export const products = [
   createProduct({
-    id: 1,
+    id: 35,
     slug: "modern-ecommerce-store",
-    title: "Modern Ecommerce Store",
+    title: "eCommerce Templates",
+    author: "Templara Studio",
+    group: "Ecommerce",
+    subCategory: "Product Pages",
+    price: 96,
+    rating: 5,
+    image: getProductImage("category-ecommerce.png"),
+    source: "Homepage Category",
+    badge: "Featured",
+    discountPercent: 28,
+    sales: "184 Sales",
+    tags: ["product pages", "shop layouts", "checkout"],
+  }),
+  createProduct({
+    id: 36,
+    slug: "business-consulting-template",
+    title: "Business Websites",
+    author: "Templara Studio",
+    group: "Business",
+    subCategory: "Corporate",
+    price: 84,
+    rating: 4,
+    image: getProductImage("category-business.png"),
+    source: "Homepage Category",
+    badge: "Featured",
+    discountPercent: 19,
+    sales: "151 Sales",
+    tags: ["corporate", "agency", "startup"],
+  }),
+  createProduct({
+    id: 37,
+    slug: "creative-portfolio-template",
+    title: "Portfolio Designs",
+    author: "Templara Studio",
+    group: "Portfolio",
+    subCategory: "Personal Portfolio",
+    price: 59,
+    rating: 4,
+    image: getProductImage("category-portfolio.png"),
+    source: "Homepage Category",
+    badge: "Featured",
+    discountPercent: 17,
+    sales: "137 Sales",
+    tags: ["personal", "creative", "resume"],
+  }),
+  createProduct({
+    id: 38,
+    slug: "movie-streaming-platform",
+    title: "Entertainment Pages",
+    author: "Templara Studio",
+    group: "Entertainment",
+    subCategory: "Media Pages",
+    price: 72,
+    rating: 4,
+    image: getProductImage("category-entertainment.png"),
+    source: "Homepage Category",
+    discountPercent: 22,
+    sales: "119 Sales",
+    tags: ["events", "media", "streaming"],
+  }),
+  createProduct({
+    id: 39,
+    slug: "ai-technology-landing",
+    title: "Technology Layouts",
+    author: "Templara Studio",
+    group: "Technology",
+    subCategory: "SaaS",
+    price: 92,
+    rating: 5,
+    image: getProductImage("category-technology.png"),
+    source: "Homepage Category",
+    badge: "Featured",
+    discountPercent: 26,
+    sales: "176 Sales",
+    tags: ["saas", "ai tools", "dashboard"],
+  }),
+  createProduct({
+    id: 40,
+    slug: "design-studio-website",
+    title: "Studio Templates",
+    author: "Templara Studio",
+    group: "Studio",
+    subCategory: "Design Studio",
+    price: 76,
+    rating: 5,
+    image: getProductImage("category-studio.png"),
+    source: "Homepage Category",
+    discountPercent: 20,
+    sales: "128 Sales",
+    tags: ["design studio", "branding", "showcase"],
+  }),
+
+  createProduct({
+    id: 1,
+    slug: "modern-online-store-template",
+    title: "Modern Online Store Template",
     author: "Market UI Lab",
     group: "Ecommerce",
     subCategory: "Online Store",
@@ -298,6 +708,8 @@ export const products = [
     rating: 5,
     image: getProductImage("product-01.png"),
     badge: "Premium",
+    discountPercent: 24,
+    sales: "156 Sales",
   }),
   createProduct({
     id: 2,
@@ -309,6 +721,8 @@ export const products = [
     price: 79,
     rating: 4,
     image: getProductImage("product-02.png"),
+    discountPercent: 19,
+    sales: "92 Sales",
   }),
   createProduct({
     id: 3,
@@ -320,6 +734,8 @@ export const products = [
     price: 110,
     rating: 5,
     image: getProductImage("product-03.png"),
+    discountPercent: 27,
+    sales: "118 Sales",
   }),
   createProduct({
     id: 4,
@@ -331,17 +747,21 @@ export const products = [
     price: 49,
     rating: 4,
     image: getProductImage("product-04.png"),
+    discountPercent: 16,
+    sales: "77 Sales",
   }),
   createProduct({
     id: 5,
-    slug: "business-consulting-template",
-    title: "Business Consulting Template",
+    slug: "business-advisor-consulting-template",
+    title: "Business Advisor Consulting Template",
     author: "Business UI Lab",
     group: "Business",
     subCategory: "Consulting",
     price: 61,
     rating: 4,
     image: getProductImage("product-05.png"),
+    discountPercent: 18,
+    sales: "105 Sales",
   }),
   createProduct({
     id: 6,
@@ -353,6 +773,8 @@ export const products = [
     price: 55,
     rating: 5,
     image: getProductImage("product-06.png"),
+    discountPercent: 22,
+    sales: "131 Sales",
   }),
   createProduct({
     id: 7,
@@ -364,6 +786,8 @@ export const products = [
     price: 83,
     rating: 5,
     image: getProductImage("product-07.png"),
+    discountPercent: 25,
+    sales: "144 Sales",
   }),
   createProduct({
     id: 8,
@@ -375,17 +799,21 @@ export const products = [
     price: 36,
     rating: 4,
     image: getProductImage("product-08.png"),
+    discountPercent: 15,
+    sales: "74 Sales",
   }),
   createProduct({
     id: 9,
-    slug: "movie-streaming-platform",
-    title: "Movie Streaming Platform",
+    slug: "cinema-streaming-platform",
+    title: "Cinema Streaming Platform",
     author: "Entertainment Lab",
     group: "Entertainment",
     subCategory: "Streaming",
     price: 74,
     rating: 4,
     image: getProductImage("product-09.png"),
+    discountPercent: 20,
+    sales: "126 Sales",
   }),
   createProduct({
     id: 10,
@@ -397,6 +825,8 @@ export const products = [
     price: 33,
     rating: 4,
     image: getProductImage("product-10.png"),
+    discountPercent: 14,
+    sales: "68 Sales",
   }),
   createProduct({
     id: 11,
@@ -408,6 +838,8 @@ export const products = [
     price: 69,
     rating: 5,
     image: getProductImage("product-11.png"),
+    discountPercent: 23,
+    sales: "111 Sales",
   }),
   createProduct({
     id: 12,
@@ -419,6 +851,8 @@ export const products = [
     price: 29,
     rating: 4,
     image: getProductImage("product-12.png"),
+    discountPercent: 12,
+    sales: "63 Sales",
   }),
   createProduct({
     id: 13,
@@ -430,6 +864,8 @@ export const products = [
     price: 37,
     rating: 3,
     image: getProductImage("product-13.png"),
+    discountPercent: 16,
+    sales: "52 Sales",
   }),
   createProduct({
     id: 14,
@@ -441,17 +877,21 @@ export const products = [
     price: 42,
     rating: 4,
     image: getProductImage("product-14.png"),
+    discountPercent: 18,
+    sales: "80 Sales",
   }),
   createProduct({
     id: 15,
-    slug: "creative-portfolio-template",
-    title: "Creative Portfolio Template",
+    slug: "minimal-creative-portfolio-template",
+    title: "Minimal Creative Portfolio Template",
     author: "Creator Grid",
     group: "Portfolio",
     subCategory: "Creative",
     price: 34,
     rating: 3,
     image: getProductImage("product-15.png"),
+    discountPercent: 17,
+    sales: "69 Sales",
   }),
   createProduct({
     id: 16,
@@ -463,6 +903,8 @@ export const products = [
     price: 54,
     rating: 4,
     image: getProductImage("product-16.png"),
+    discountPercent: 20,
+    sales: "91 Sales",
   }),
   createProduct({
     id: 17,
@@ -474,6 +916,8 @@ export const products = [
     price: 46,
     rating: 4,
     image: getProductImage("product-17.png"),
+    discountPercent: 19,
+    sales: "87 Sales",
   }),
   createProduct({
     id: 18,
@@ -485,17 +929,21 @@ export const products = [
     price: 44,
     rating: 5,
     image: getProductImage("product-18.png"),
+    discountPercent: 22,
+    sales: "99 Sales",
   }),
   createProduct({
     id: 19,
-    slug: "design-studio-website",
-    title: "Design Studio Website",
+    slug: "studio-design-agency-website",
+    title: "Studio Design Agency Website",
     author: "Studio Lab",
     group: "Studio",
     subCategory: "Design Studio",
     price: 72,
     rating: 5,
     image: getProductImage("product-19.png"),
+    discountPercent: 21,
+    sales: "108 Sales",
   }),
   createProduct({
     id: 20,
@@ -507,6 +955,8 @@ export const products = [
     price: 39,
     rating: 4,
     image: getProductImage("product-20.png"),
+    discountPercent: 18,
+    sales: "71 Sales",
   }),
   createProduct({
     id: 21,
@@ -518,11 +968,13 @@ export const products = [
     price: 52,
     rating: 4,
     image: getProductImage("product-21.png"),
+    discountPercent: 19,
+    sales: "84 Sales",
   }),
   createProduct({
     id: 22,
-    slug: "ai-technology-landing",
-    title: "AI Technology Landing",
+    slug: "ai-startup-technology-landing",
+    title: "AI Startup Technology Landing",
     author: "Tech Pixel",
     group: "Technology",
     subCategory: "AI Tools",
@@ -530,6 +982,8 @@ export const products = [
     rating: 5,
     image: getProductImage("product-22.png"),
     badge: "New",
+    discountPercent: 26,
+    sales: "142 Sales",
   }),
   createProduct({
     id: 23,
@@ -541,6 +995,8 @@ export const products = [
     price: 79,
     rating: 5,
     image: getProductImage("product-23.png"),
+    discountPercent: 24,
+    sales: "125 Sales",
   }),
   createProduct({
     id: 24,
@@ -552,6 +1008,8 @@ export const products = [
     price: 51,
     rating: 5,
     image: getProductImage("product-24.png"),
+    discountPercent: 21,
+    sales: "97 Sales",
   }),
   createProduct({
     id: 25,
@@ -563,6 +1021,8 @@ export const products = [
     price: 72,
     rating: 5,
     image: getProductImage("product-25.png"),
+    discountPercent: 28,
+    sales: "133 Sales",
   }),
   createProduct({
     id: 26,
@@ -574,6 +1034,8 @@ export const products = [
     price: 63,
     rating: 4,
     image: getProductImage("product-26.png"),
+    discountPercent: 16,
+    sales: "90 Sales",
   }),
   createProduct({
     id: 27,
@@ -585,6 +1047,8 @@ export const products = [
     price: 91,
     rating: 5,
     image: getProductImage("product-27.png"),
+    discountPercent: 23,
+    sales: "116 Sales",
   }),
   createProduct({
     id: 28,
@@ -596,6 +1060,8 @@ export const products = [
     price: 41,
     rating: 4,
     image: getProductImage("product-28.png"),
+    discountPercent: 14,
+    sales: "75 Sales",
   }),
   createProduct({
     id: 29,
@@ -607,6 +1073,8 @@ export const products = [
     price: 66,
     rating: 4,
     image: getProductImage("product-29.png"),
+    discountPercent: 21,
+    sales: "89 Sales",
   }),
   createProduct({
     id: 30,
@@ -618,6 +1086,8 @@ export const products = [
     price: 95,
     rating: 5,
     image: getProductImage("product-30.png"),
+    discountPercent: 25,
+    sales: "107 Sales",
   }),
   createProduct({
     id: 31,
@@ -629,6 +1099,8 @@ export const products = [
     price: 47,
     rating: 4,
     image: getProductImage("product-31.png"),
+    discountPercent: 18,
+    sales: "82 Sales",
   }),
   createProduct({
     id: 32,
@@ -640,6 +1112,8 @@ export const products = [
     price: 104,
     rating: 5,
     image: getProductImage("product-32.png"),
+    discountPercent: 27,
+    sales: "129 Sales",
   }),
   createProduct({
     id: 33,
@@ -651,6 +1125,8 @@ export const products = [
     price: 53,
     rating: 4,
     image: getProductImage("product-33.png"),
+    discountPercent: 18,
+    sales: "73 Sales",
   }),
   createProduct({
     id: 34,
@@ -662,83 +1138,8 @@ export const products = [
     price: 67,
     rating: 5,
     image: getProductImage("product-34.png"),
-  }),
-
-  createProduct({
-    id: 35,
-    slug: "ecommerce-template-collection",
-    title: "eCommerce Templates",
-    author: "Templara Studio",
-    group: "Ecommerce",
-    subCategory: "Product Pages",
-    price: 96,
-    rating: 5,
-    image: getProductImage("category-ecommerce.png"),
-    source: "Homepage Category",
-    badge: "Featured",
-  }),
-  createProduct({
-    id: 36,
-    slug: "business-website-collection",
-    title: "Business Websites",
-    author: "Templara Studio",
-    group: "Business",
-    subCategory: "Corporate",
-    price: 84,
-    rating: 4,
-    image: getProductImage("category-business.png"),
-    source: "Homepage Category",
-    badge: "Featured",
-  }),
-  createProduct({
-    id: 37,
-    slug: "portfolio-design-collection",
-    title: "Portfolio Designs",
-    author: "Templara Studio",
-    group: "Portfolio",
-    subCategory: "Personal Portfolio",
-    price: 59,
-    rating: 4,
-    image: getProductImage("category-portfolio.png"),
-    source: "Homepage Category",
-    badge: "Featured",
-  }),
-  createProduct({
-    id: 38,
-    slug: "entertainment-page-collection",
-    title: "Entertainment Pages",
-    author: "Templara Studio",
-    group: "Entertainment",
-    subCategory: "Media Pages",
-    price: 72,
-    rating: 4,
-    image: getProductImage("category-entertainment.png"),
-    source: "Homepage Category",
-  }),
-  createProduct({
-    id: 39,
-    slug: "technology-layout-collection",
-    title: "Technology Layouts",
-    author: "Templara Studio",
-    group: "Technology",
-    subCategory: "SaaS",
-    price: 92,
-    rating: 5,
-    image: getProductImage("category-technology.png"),
-    source: "Homepage Category",
-    badge: "Featured",
-  }),
-  createProduct({
-    id: 40,
-    slug: "studio-template-collection",
-    title: "Studio Templates",
-    author: "Templara Studio",
-    group: "Studio",
-    subCategory: "Design Studio",
-    price: 76,
-    rating: 5,
-    image: getProductImage("category-studio.png"),
-    source: "Homepage Category",
+    discountPercent: 22,
+    sales: "94 Sales",
   }),
 
   createProduct({
@@ -753,6 +1154,7 @@ export const products = [
     image: getProductImage("new-dashboard.png"),
     source: "New Arrival",
     badge: "Premium",
+    discountPercent: 24,
     sales: "126 Sales",
   }),
   createProduct({
@@ -767,6 +1169,7 @@ export const products = [
     image: getProductImage("new-ecommerce.png"),
     source: "New Arrival",
     badge: "New",
+    discountPercent: 23,
     sales: "98 Sales",
   }),
   createProduct({
@@ -780,6 +1183,7 @@ export const products = [
     rating: 4,
     image: getProductImage("new-agency.png"),
     source: "New Arrival",
+    discountPercent: 18,
     sales: "142 Sales",
   }),
   createProduct({
@@ -788,12 +1192,13 @@ export const products = [
     title: "Cloudly SaaS Website",
     author: "PixelCraft Lab",
     group: "Technology",
-    subCategory: "SaaS Website",
+    subCategory: "SaaS",
     price: 49,
     rating: 4,
     image: getProductImage("new-saas.png"),
     source: "New Arrival",
     badge: "New",
+    discountPercent: 21,
     sales: "87 Sales",
   }),
   createProduct({
@@ -808,6 +1213,7 @@ export const products = [
     image: getProductImage("new-portfolio.png"),
     source: "New Arrival",
     badge: "Popular",
+    discountPercent: 16,
     sales: "113 Sales",
   }),
   createProduct({
@@ -821,6 +1227,7 @@ export const products = [
     rating: 4,
     image: getProductImage("new-studio.png"),
     source: "New Arrival",
+    discountPercent: 18,
     sales: "76 Sales",
   }),
   createProduct({
@@ -835,6 +1242,7 @@ export const products = [
     image: getProductImage("new-corporate.png"),
     source: "New Arrival",
     badge: "New",
+    discountPercent: 17,
     sales: "91 Sales",
   }),
   createProduct({
@@ -849,6 +1257,7 @@ export const products = [
     image: getProductImage("new-retail.png"),
     source: "New Arrival",
     badge: "Premium",
+    discountPercent: 21,
     sales: "104 Sales",
   }),
   createProduct({
@@ -863,6 +1272,7 @@ export const products = [
     image: getProductImage("new-finance.png"),
     source: "New Arrival",
     badge: "Hot",
+    discountPercent: 27,
     sales: "132 Sales",
   }),
 
@@ -877,6 +1287,8 @@ export const products = [
     rating: 4,
     image: getProductImage("recent-dashboard.png"),
     source: "Recently Added",
+    discountPercent: 18,
+    sales: "94 Sales",
   }),
   createProduct({
     id: 202,
@@ -890,6 +1302,8 @@ export const products = [
     image: getProductImage("recent-commerce.png"),
     source: "Recently Added",
     badge: "Popular",
+    discountPercent: 22,
+    sales: "116 Sales",
   }),
   createProduct({
     id: 203,
@@ -902,6 +1316,8 @@ export const products = [
     rating: 4,
     image: getProductImage("recent-agency.png"),
     source: "Recently Added",
+    discountPercent: 16,
+    sales: "88 Sales",
   }),
   createProduct({
     id: 204,
@@ -915,6 +1331,8 @@ export const products = [
     image: getProductImage("recent-portfolio.png"),
     source: "Recently Added",
     badge: "Popular",
+    discountPercent: 15,
+    sales: "121 Sales",
   }),
   createProduct({
     id: 205,
@@ -927,6 +1345,8 @@ export const products = [
     rating: 4,
     image: getProductImage("recent-saas.png"),
     source: "Recently Added",
+    discountPercent: 20,
+    sales: "73 Sales",
   }),
   createProduct({
     id: 206,
@@ -939,6 +1359,8 @@ export const products = [
     rating: 4,
     image: getProductImage("recent-studio.png"),
     source: "Recently Added",
+    discountPercent: 17,
+    sales: "82 Sales",
   }),
   createProduct({
     id: 207,
@@ -952,6 +1374,8 @@ export const products = [
     image: getProductImage("recent-figma-kit.png"),
     source: "Recently Added",
     badge: "Premium",
+    discountPercent: 26,
+    sales: "109 Sales",
   }),
   createProduct({
     id: 208,
@@ -964,6 +1388,8 @@ export const products = [
     rating: 4,
     image: getProductImage("recent-shopify.png"),
     source: "Recently Added",
+    discountPercent: 19,
+    sales: "86 Sales",
   }),
   createProduct({
     id: 209,
@@ -977,6 +1403,8 @@ export const products = [
     image: getProductImage("recent-framer.png"),
     source: "Recently Added",
     badge: "New",
+    discountPercent: 15,
+    sales: "97 Sales",
   }),
 ];
 
@@ -1013,8 +1441,6 @@ export const categoryMap = {
   "all-items": "All Items",
   products: "All Items",
   "all-products": "All Items",
-  template: "All Items",
-  templates: "All Items",
   "digital-products": "All Items",
 
   ecommerce: "Ecommerce",
@@ -1026,13 +1452,11 @@ export const categoryMap = {
   "product-pages": "Ecommerce",
   checkout: "Ecommerce",
   woocommerce: "Ecommerce",
-  "grocery-ecommerce": "Ecommerce",
   shopify: "Ecommerce",
 
   business: "Business",
   consulting: "Business",
   agency: "Business",
-  agencies: "Business",
   startup: "Business",
   services: "Business",
   "landing-page": "Business",
@@ -1041,6 +1465,7 @@ export const categoryMap = {
 
   entertainment: "Entertainment",
   event: "Entertainment",
+  events: "Entertainment",
   movie: "Entertainment",
   music: "Entertainment",
   gaming: "Entertainment",
