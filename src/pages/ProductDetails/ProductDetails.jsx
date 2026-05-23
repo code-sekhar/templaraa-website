@@ -25,7 +25,7 @@ const getFallbackFeedbacks = (product) => [
   {
     id: 2,
     name: "Jane Cooper",
-    time: "30 Apr, 2024",
+    time: "15 hours ago",
     rating: 5,
     title: "Easy to customize",
     comment: `The ${product.subCategory} structure is practical and well organized. It has useful sections, polished spacing, and a professional visual style.`,
@@ -130,10 +130,14 @@ function ProductDetails({ onAddToCart }) {
   const [contactForm, setContactForm] = useState({
     fullName: "",
     email: "",
-    subject: "Template customization",
+    inquiryType: "Template customization",
+    subject: "",
+    projectUrl: "",
     message: "",
+    agree: false,
   });
 
+  const [contactErrors, setContactErrors] = useState({});
   const [formMessage, setFormMessage] = useState("");
 
   const [relatedGroupSize, setRelatedGroupSize] = useState(3);
@@ -175,6 +179,15 @@ function ProductDetails({ onAddToCart }) {
     return [...matchedProducts, ...extraProducts].slice(0, 10);
   }, [product]);
 
+  const sellerInfo = useMemo(() => {
+    if (!product) return null;
+
+    return {
+      email: product.sellerEmail || "support@example.com",
+      supportEmail: product.supportEmail || "help@example.com",
+    };
+  }, [product]);
+
   useEffect(() => {
     const updateRelatedGroupSize = () => {
       const width = window.innerWidth;
@@ -204,8 +217,19 @@ function ProductDetails({ onAddToCart }) {
     setVisibleFeedbackCount(4);
     setCustomFeedbacks([]);
     setFormMessage("");
+    setContactErrors({});
     setReviewRating(3);
     setActiveRelatedGroup(0);
+
+    setContactForm({
+      fullName: "",
+      email: "",
+      inquiryType: "Template customization",
+      subject: "",
+      projectUrl: "",
+      message: "",
+      agree: false,
+    });
 
     if (relatedSliderRef.current) {
       relatedSliderRef.current.scrollTo({
@@ -243,6 +267,7 @@ function ProductDetails({ onAddToCart }) {
 
   const productSku = `TPL-${String(product.id).padStart(3, "0")}`;
   const discount = Number(product.discountPercent || product.discount || 18);
+
   const oldPrice = Number(
     product.oldPrice || product.price / (1 - discount / 100)
   );
@@ -390,13 +415,17 @@ function ProductDetails({ onAddToCart }) {
     setVisibleFeedbackCount((current) => current + 4);
   };
 
-  const handleCopyCode = async (code) => {
+  const handleCopyText = async (text, successMessage) => {
     try {
-      await navigator.clipboard.writeText(code);
-      setFormMessage("Command copied successfully.");
+      await navigator.clipboard.writeText(text);
+      setFormMessage(successMessage);
     } catch {
       setFormMessage("Copy failed. Please copy manually.");
     }
+  };
+
+  const handleCopyCode = async (code) => {
+    handleCopyText(code, "Command copied successfully.");
   };
 
   const handleReportSubmit = (event) => {
@@ -441,18 +470,83 @@ function ProductDetails({ onAddToCart }) {
     setFormMessage("Your review has been added to Customer Feedback.");
   };
 
+  const handleContactInputChange = (field, value) => {
+    setContactForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+
+    setContactErrors((current) => ({
+      ...current,
+      [field]: "",
+    }));
+  };
+
+  const validateContactForm = () => {
+    const errors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!contactForm.fullName.trim()) {
+      errors.fullName = "Full name is required.";
+    }
+
+    if (!contactForm.email.trim()) {
+      errors.email = "Email address is required.";
+    } else if (!emailRegex.test(contactForm.email)) {
+      errors.email = "Please enter a valid email address.";
+    }
+
+    if (!contactForm.subject.trim()) {
+      errors.subject = "Subject is required.";
+    }
+
+    if (!contactForm.message.trim()) {
+      errors.message = "Message is required.";
+    } else if (contactForm.message.trim().length < 20) {
+      errors.message = "Message should be at least 20 characters.";
+    }
+
+    if (!contactForm.agree) {
+      errors.agree = "Please confirm before sending.";
+    }
+
+    return errors;
+  };
+
   const handleContactSubmit = (event) => {
     event.preventDefault();
 
+    const errors = validateContactForm();
+
+    if (Object.keys(errors).length > 0) {
+      setContactErrors(errors);
+      setFormMessage("Please fix the highlighted contact form fields.");
+      return;
+    }
+
+    const contactPayload = {
+      productId: product.id,
+      productTitle: product.title,
+      sellerEmail: sellerInfo.email,
+      ...contactForm,
+    };
+
+    console.log("Contact seller message:", contactPayload);
+
     setFormMessage(
-      "Your message has been prepared for the seller. Seller contact functionality can be connected later."
+      "Your message has been submitted successfully. The seller will contact you soon."
     );
+
+    setContactErrors({});
 
     setContactForm({
       fullName: "",
       email: "",
-      subject: "Template customization",
+      inquiryType: "Template customization",
+      subject: "",
+      projectUrl: "",
       message: "",
+      agree: false,
     });
   };
 
@@ -564,7 +658,16 @@ function ProductDetails({ onAddToCart }) {
                       <ion-icon name="logo-linkedin"></ion-icon>
                     </button>
 
-                    <button type="button" aria-label="Copy product link">
+                    <button
+                      type="button"
+                      aria-label="Copy product link"
+                      onClick={() =>
+                        handleCopyText(
+                          window.location.href,
+                          "Product link copied successfully."
+                        )
+                      }
+                    >
                       <ion-icon name="link-outline"></ion-icon>
                     </button>
                   </div>
@@ -578,61 +681,57 @@ function ProductDetails({ onAddToCart }) {
               <div className="details-divider"></div>
 
               <div className="details-action-panel">
-                <div className="details-action-row top-action">
-                  <div className="details-quantity-control">
-                    <button
-                      type="button"
-                      aria-label="Decrease quantity"
-                      onClick={handleQuantityMinus}
-                    >
-                      <ion-icon name="remove-outline"></ion-icon>
-                    </button>
-
-                    <span>{quantity}</span>
-
-                    <button
-                      type="button"
-                      aria-label="Increase quantity"
-                      onClick={handleQuantityPlus}
-                    >
-                      <ion-icon name="add-outline"></ion-icon>
-                    </button>
-                  </div>
-
+                <div className="details-quantity-control">
                   <button
                     type="button"
-                    className="details-add-cart-btn"
-                    onClick={handleAddToCart}
+                    aria-label="Decrease quantity"
+                    onClick={handleQuantityMinus}
                   >
-                    Add to Cart
-                    <ion-icon name="cart-outline"></ion-icon>
+                    <ion-icon name="remove-outline"></ion-icon>
                   </button>
 
+                  <span>{quantity}</span>
+
                   <button
                     type="button"
-                    className={
-                      isWishlisted
-                        ? "details-wishlist-btn active"
-                        : "details-wishlist-btn"
-                    }
-                    onClick={() => setIsWishlisted((current) => !current)}
-                    aria-label="Add to wishlist"
+                    aria-label="Increase quantity"
+                    onClick={handleQuantityPlus}
                   >
-                    <ion-icon
-                      name={isWishlisted ? "heart" : "heart-outline"}
-                    ></ion-icon>
+                    <ion-icon name="add-outline"></ion-icon>
                   </button>
                 </div>
 
-                <div className="details-action-row bottom-action">
-                  <button
-                    type="button"
-                    className="details-buy-now-btn"
-                    onClick={handleBuyNow}
-                  >
-                    Buy Now
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="details-add-cart-btn"
+                  onClick={handleAddToCart}
+                >
+                  Add to Cart
+                  <ion-icon name="cart-outline"></ion-icon>
+                </button>
+
+                <button
+                  type="button"
+                  className={
+                    isWishlisted
+                      ? "details-wishlist-btn active"
+                      : "details-wishlist-btn"
+                  }
+                  onClick={() => setIsWishlisted((current) => !current)}
+                  aria-label="Add to wishlist"
+                >
+                  <ion-icon
+                    name={isWishlisted ? "heart" : "heart-outline"}
+                  ></ion-icon>
+                </button>
+
+                <button
+                  type="button"
+                  className="details-buy-now-btn"
+                  onClick={handleBuyNow}
+                >
+                  Buy Now
+                </button>
               </div>
 
               <div className="details-divider details-meta-divider"></div>
@@ -677,9 +776,14 @@ function ProductDetails({ onAddToCart }) {
                 <p>
                   <strong>Tags:</strong>
 
-                  {(product.tags || []).map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
+                  {(product.tags || [])
+                    .filter(Boolean)
+                    .map((tag, index, array) => (
+                      <span key={`${tag}-${index}`}>
+                        {tag}
+                        {index < array.length - 1 ? "," : ""}
+                      </span>
+                    ))}
                 </p>
               </div>
             </div>
@@ -878,7 +982,10 @@ function ProductDetails({ onAddToCart }) {
                 <button
                   type="button"
                   className={activeSupportTab === "installation" ? "active" : ""}
-                  onClick={() => setActiveSupportTab("installation")}
+                  onClick={() => {
+                    setActiveSupportTab("installation");
+                    setFormMessage("");
+                  }}
                 >
                   Installation Guide
                 </button>
@@ -886,7 +993,10 @@ function ProductDetails({ onAddToCart }) {
                 <button
                   type="button"
                   className={activeSupportTab === "feedback" ? "active" : ""}
-                  onClick={() => setActiveSupportTab("feedback")}
+                  onClick={() => {
+                    setActiveSupportTab("feedback");
+                    setFormMessage("");
+                  }}
                 >
                   Product Feedback
                 </button>
@@ -894,7 +1004,10 @@ function ProductDetails({ onAddToCart }) {
                 <button
                   type="button"
                   className={activeSupportTab === "contact" ? "active" : ""}
-                  onClick={() => setActiveSupportTab("contact")}
+                  onClick={() => {
+                    setActiveSupportTab("contact");
+                    setFormMessage("");
+                  }}
                 >
                   Contact Seller
                 </button>
@@ -948,7 +1061,9 @@ function ProductDetails({ onAddToCart }) {
                             </div>
 
                             {step.note ? (
-                              <div className="details-code-note">{step.note}</div>
+                              <div className="details-code-note">
+                                {step.note}
+                              </div>
                             ) : null}
                           </div>
                         </div>
@@ -1150,88 +1265,110 @@ function ProductDetails({ onAddToCart }) {
                 )}
 
                 {activeSupportTab === "contact" && (
-                  <div className="details-contact-content">
-                    <div className="details-seller-info">
-                      <div>
-                        <span>
-                          <ion-icon name="mail-outline"></ion-icon>
-                        </span>
+                  <div className="details-contact-content simple-contact-content">
+                    <div className="details-seller-panel simple-seller-panel">
+                      <div className="details-seller-info simple-seller-info">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleCopyText(
+                              sellerInfo.email,
+                              "Seller email copied successfully."
+                            )
+                          }
+                        >
+                          <span>
+                            <ion-icon name="mail-outline"></ion-icon>
+                          </span>
 
-                        <p>Email</p>
-                        <strong>
-                          {product.sellerEmail || "support@example.com"}
-                        </strong>
-                      </div>
+                          <div>
+                            <small>Primary Email</small>
+                            <strong>{sellerInfo.email}</strong>
+                          </div>
+                        </button>
 
-                      <div>
-                        <span>
-                          <ion-icon name="call-outline"></ion-icon>
-                        </span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleCopyText(
+                              sellerInfo.supportEmail,
+                              "Support email copied successfully."
+                            )
+                          }
+                        >
+                          <span>
+                            <ion-icon name="help-buoy-outline"></ion-icon>
+                          </span>
 
-                        <p>Phone</p>
-                        <strong>{product.sellerPhone || "+1 (555) 123-4567"}</strong>
-                      </div>
-
-                      <div>
-                        <span>
-                          <ion-icon name="mail-outline"></ion-icon>
-                        </span>
-
-                        <p>Email</p>
-                        <strong>
-                          {product.supportEmail || "support@example.com"}
-                        </strong>
+                          <div>
+                            <small>Support Email</small>
+                            <strong>{sellerInfo.supportEmail}</strong>
+                          </div>
+                        </button>
                       </div>
                     </div>
 
                     <form
-                      className="details-contact-form"
+                      className="details-contact-form simple-contact-form"
                       onSubmit={handleContactSubmit}
+                      noValidate
                     >
                       <div className="details-contact-grid">
                         <label className="details-input-group">
-                          <span>Full Name</span>
+                          <span>Full Name *</span>
 
                           <input
                             type="text"
+                            placeholder="Enter your full name"
                             value={contactForm.fullName}
                             onChange={(event) =>
-                              setContactForm((current) => ({
-                                ...current,
-                                fullName: event.target.value,
-                              }))
+                              handleContactInputChange(
+                                "fullName",
+                                event.target.value
+                              )
                             }
-                            required
                           />
+
+                          {contactErrors.fullName ? (
+                            <small className="details-field-error">
+                              {contactErrors.fullName}
+                            </small>
+                          ) : null}
                         </label>
 
                         <label className="details-input-group">
-                          <span>Email Address</span>
+                          <span>Email Address *</span>
 
                           <input
                             type="email"
+                            placeholder="Enter your email address"
                             value={contactForm.email}
                             onChange={(event) =>
-                              setContactForm((current) => ({
-                                ...current,
-                                email: event.target.value,
-                              }))
+                              handleContactInputChange(
+                                "email",
+                                event.target.value
+                              )
                             }
-                            required
                           />
+
+                          {contactErrors.email ? (
+                            <small className="details-field-error">
+                              {contactErrors.email}
+                            </small>
+                          ) : null}
                         </label>
                       </div>
 
                       <label className="details-input-group">
-                        <span>Subject</span>
+                        <span>Inquiry Type</span>
 
                         <select
-                          value={contactForm.subject}
+                          value={contactForm.inquiryType}
                           onChange={(event) =>
-                            setContactForm((current) => ({
-                              ...current,
-                              subject: event.target.value,
-                            }))
+                            handleContactInputChange(
+                              "inquiryType",
+                              event.target.value
+                            )
                           }
                         >
                           <option value="Template customization">
@@ -1246,26 +1383,99 @@ function ProductDetails({ onAddToCart }) {
                           <option value="Pre-sale question">
                             Pre-sale question
                           </option>
+                          <option value="Bug or technical issue">
+                            Bug or technical issue
+                          </option>
                         </select>
                       </label>
 
                       <label className="details-input-group">
-                        <span>Message</span>
+                        <span>Subject *</span>
 
-                        <textarea
-                          value={contactForm.message}
+                        <input
+                          type="text"
+                          placeholder={`Question about ${product.title}`}
+                          value={contactForm.subject}
                           onChange={(event) =>
-                            setContactForm((current) => ({
-                              ...current,
-                              message: event.target.value,
-                            }))
+                            handleContactInputChange(
+                              "subject",
+                              event.target.value
+                            )
                           }
-                          required
-                        ></textarea>
+                        />
+
+                        {contactErrors.subject ? (
+                          <small className="details-field-error">
+                            {contactErrors.subject}
+                          </small>
+                        ) : null}
                       </label>
 
+                      <label className="details-input-group">
+                        <span>Project URL</span>
+
+                        <input
+                          type="url"
+                          placeholder="https://your-project-link.com"
+                          value={contactForm.projectUrl}
+                          onChange={(event) =>
+                            handleContactInputChange(
+                              "projectUrl",
+                              event.target.value
+                            )
+                          }
+                        />
+                      </label>
+
+                      <label className="details-input-group">
+                        <span>Message *</span>
+
+                        <textarea
+                          placeholder="Write your message for the seller..."
+                          value={contactForm.message}
+                          onChange={(event) =>
+                            handleContactInputChange(
+                              "message",
+                              event.target.value
+                            )
+                          }
+                        ></textarea>
+
+                        {contactErrors.message ? (
+                          <small className="details-field-error">
+                            {contactErrors.message}
+                          </small>
+                        ) : null}
+                      </label>
+
+                      <label className="details-contact-check">
+                        <input
+                          type="checkbox"
+                          checked={contactForm.agree}
+                          onChange={(event) =>
+                            handleContactInputChange(
+                              "agree",
+                              event.target.checked
+                            )
+                          }
+                        />
+
+                        <span>
+                          I confirm that my message is related to this product
+                          and the seller can contact me using the provided email
+                          address.
+                        </span>
+                      </label>
+
+                      {contactErrors.agree ? (
+                        <small className="details-field-error">
+                          {contactErrors.agree}
+                        </small>
+                      ) : null}
+
                       <button type="submit" className="details-submit-btn">
-                        Submit Review
+                        Send Message
+                        <ion-icon name="send-outline"></ion-icon>
                       </button>
                     </form>
                   </div>
@@ -1317,6 +1527,17 @@ function ProductDetails({ onAddToCart }) {
                           <strong>${item.price}</strong>
                           <small>{item.subCategory}</small>
                         </div>
+
+                        <button
+                          type="button"
+                          className="details-related-view-btn"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleRelatedClick(item);
+                          }}
+                        >
+                          View Details
+                        </button>
                       </div>
                     </article>
                   ))}

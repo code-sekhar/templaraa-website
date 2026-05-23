@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
 import Product from "./pages/Product/Product";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
+import Cart from "./pages/Cart/Cart";
 
 function App() {
   const navigate = useNavigate();
@@ -28,13 +29,7 @@ function App() {
   };
 
   const handleCartClick = () => {
-    console.log("Cart clicked:", cartItems);
-
-    /*
-      Later:
-      navigate("/cart");
-      or open cart sidebar
-    */
+    navigate("/cart");
   };
 
   const handleHeroButtonClick = (button) => {
@@ -102,8 +97,38 @@ function App() {
     });
   };
 
+  const handleUpdateCartQuantity = (productId, type) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.id !== productId) {
+          return item;
+        }
+
+        const currentQuantity = Number(item.quantity || 1);
+
+        const nextQuantity =
+          type === "increase" ? currentQuantity + 1 : currentQuantity - 1;
+
+        return {
+          ...item,
+          quantity: Math.max(1, nextQuantity),
+        };
+      })
+    );
+  };
+
+  const handleRemoveCartItem = (productId) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.id !== productId)
+    );
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
+  };
+
   const cartCount = cartItems.reduce((total, item) => {
-    return total + item.quantity;
+    return total + Number(item.quantity || 1);
   }, 0);
 
   return (
@@ -152,6 +177,18 @@ function App() {
         <Route
           path="/products/:slug"
           element={<ProductDetails onAddToCart={handleAddToCart} />}
+        />
+
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              cartItems={cartItems}
+              onUpdateCartQuantity={handleUpdateCartQuantity}
+              onRemoveCartItem={handleRemoveCartItem}
+              onClearCart={handleClearCart}
+            />
+          }
         />
       </Routes>
 

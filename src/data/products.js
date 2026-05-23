@@ -3,16 +3,98 @@ const getProductImage = (imageName) => {
     .href;
 };
 
+const normalizeText = (value = "") => {
+  return String(value)
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/\+/g, "plus")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
 const productTagsByGroup = {
-  Ecommerce: ["ecommerce", "checkout", "store"],
-  Business: ["business", "agency", "landing"],
-  Entertainment: ["media", "event", "streaming"],
-  Personal: ["resume", "profile", "personal"],
-  Portfolio: ["portfolio", "creative", "showcase"],
-  Studio: ["studio", "branding", "creative"],
-  Technology: ["saas", "dashboard", "react"],
-  Corporate: ["corporate", "company", "business"],
-  Retails: ["retail", "store", "shop"],
+  Ecommerce: ["html", "css", "javascript"],
+  Business: ["react", "tailwind", "vite"],
+  Entertainment: ["html", "css", "swiper"],
+  Personal: ["react", "css", "emailjs"],
+  Portfolio: ["react", "framer-motion", "tailwind"],
+  Studio: ["figma", "react", "scss"],
+  Technology: ["nextjs", "typescript", "tailwind"],
+  Corporate: ["bootstrap", "javascript", "sass"],
+  Retails: ["shopify", "liquid", "css"],
+};
+
+const productTechTagsById = {
+  35: ["html", "css", "javascript"],
+  36: ["bootstrap", "javascript", "sass"],
+  37: ["react", "tailwind", "framer-motion"],
+  38: ["html", "css", "swiper"],
+  39: ["nextjs", "typescript", "tailwind"],
+  40: ["figma", "react", "scss"],
+
+  1: ["html", "css", "javascript"],
+  2: ["wordpress", "woocommerce", "php"],
+  3: ["nextjs", "react", "mongodb"],
+  4: ["react", "recharts", "tailwind"],
+  5: ["bootstrap", "javascript", "sass"],
+  6: ["react", "vite", "tailwind"],
+  7: ["nextjs", "typescript", "stripe"],
+  8: ["html", "css", "gsap"],
+  9: ["react", "tmdb-api", "css"],
+  10: ["html", "css", "swiper"],
+  11: ["react", "firebase", "tailwind"],
+  12: ["html", "css", "javascript"],
+  13: ["wordpress", "blog", "php"],
+  14: ["react", "vite", "emailjs"],
+  15: ["html", "css", "gsap"],
+  16: ["react", "framer-motion", "tailwind"],
+  17: ["react", "typescript", "scss"],
+  18: ["figma", "html", "css"],
+  19: ["react", "scss", "gsap"],
+  20: ["html", "css", "bootstrap"],
+  21: ["figma", "ui-kit", "design-system"],
+  22: ["nextjs", "ai-api", "tailwind"],
+  23: ["react", "recharts", "dashboard"],
+  24: ["figma", "mobile-ui", "prototype"],
+  25: ["react", "web3", "chartjs"],
+  26: ["bootstrap", "html", "sass"],
+  27: ["react", "typescript", "dashboard"],
+  28: ["html", "css", "javascript"],
+  29: ["shopify", "liquid", "css"],
+  30: ["react", "recharts", "pos"],
+  31: ["figma", "ecommerce-ui", "prototype"],
+  32: ["nextjs", "mongodb", "stripe"],
+  33: ["html", "css", "event-js"],
+  34: ["react", "firebase", "stripe"],
+
+  101: ["react", "recharts", "tailwind"],
+  102: ["react", "css", "stripe"],
+  103: ["react", "vite", "tailwind"],
+  104: ["nextjs", "typescript", "saas"],
+  105: ["react", "framer-motion", "css"],
+  106: ["figma", "react", "scss"],
+  107: ["bootstrap", "sass", "javascript"],
+  108: ["shopify", "liquid", "css"],
+  109: ["react", "chartjs", "finance"],
+
+  201: ["wordpress", "elementor", "php"],
+  202: ["shopify", "liquid", "javascript"],
+  203: ["react", "vite", "tailwind"],
+  204: ["react", "framer-motion", "css"],
+  205: ["nextjs", "tailwind", "saas"],
+  206: ["wordpress", "acf", "php"],
+  207: ["figma", "finance-ui", "prototype"],
+  208: ["shopify", "liquid", "css"],
+  209: ["framer", "cms", "no-code"],
+};
+
+const getProductTechTags = (product) => {
+  return (
+    productTechTagsById[Number(product.id)] ||
+    productTagsByGroup[product.group] ||
+    ["html", "css", "javascript"]
+  );
 };
 
 const productFeatures = {
@@ -469,6 +551,86 @@ const extraPagesPool = [
   "Support Page",
 ];
 
+const getStackConfig = (product) => {
+  const tags = getProductTechTags(product);
+  const tagText = tags.join(", ");
+
+  if (tags.includes("wordpress") || tags.includes("woocommerce")) {
+    return {
+      env: `WP_THEME_NAME="${product.slug}"\nWP_TEMPLATE_STACK="${tagText}"\nWP_ENABLE_DEMO_IMPORT=true`,
+      start: "npm run wp:dev",
+      build: "npm run wp:build",
+      path: "wp-content/themes\ntemplate-parts\nassets/css\nassets/js",
+      setupItem:
+        "WordPress theme files, demo content, WooCommerce settings, and plugin requirements",
+    };
+  }
+
+  if (tags.includes("shopify") || tags.includes("liquid")) {
+    return {
+      env: `SHOPIFY_THEME_NAME="${product.slug}"\nSHOPIFY_STACK="${tagText}"\nSHOPIFY_STORE_URL=https://your-store.myshopify.com`,
+      start: "shopify theme dev",
+      build: "shopify theme package",
+      path: "sections\nsnippets\ntemplates\nassets\nconfig",
+      setupItem:
+        "Shopify store access, Liquid sections, product collections, and theme settings",
+    };
+  }
+
+  if (tags.includes("figma") || tags.includes("prototype")) {
+    return {
+      env: `VITE_DESIGN_KIT="${product.slug}"\nVITE_TEMPLATE_STACK="${tagText}"\nVITE_PROTOTYPE_MODE=true`,
+      start: "npm run dev",
+      build: "npm run build",
+      path: "src/assets\nsrc/components\nsrc/styles\nfigma-export",
+      setupItem:
+        "Figma components, design tokens, exported assets, and prototype screens",
+    };
+  }
+
+  if (tags.includes("framer")) {
+    return {
+      env: `FRAMER_TEMPLATE="${product.slug}"\nFRAMER_STACK="${tagText}"\nFRAMER_CMS_ENABLED=true`,
+      start: "npm run dev",
+      build: "npm run build",
+      path: "src/components\nsrc/pages\ncms\nstyles",
+      setupItem:
+        "Framer project structure, CMS fields, reusable sections, and no-code page blocks",
+    };
+  }
+
+  if (tags.includes("nextjs")) {
+    return {
+      env: `NEXT_PUBLIC_TEMPLATE_ID="${product.id}"\nNEXT_PUBLIC_TEMPLATE_NAME="${product.title}"\nNEXT_PUBLIC_TEMPLATE_STACK="${tagText}"`,
+      start: "npm run dev",
+      build: "npm run build",
+      path: "app\ncomponents\npublic\nstyles\nlib",
+      setupItem:
+        "Next.js pages, app routes, reusable components, assets, and environment values",
+    };
+  }
+
+  if (tags.includes("react")) {
+    return {
+      env: `VITE_TEMPLATE_ID="${product.id}"\nVITE_TEMPLATE_NAME="${product.title}"\nVITE_TEMPLATE_STACK="${tagText}"`,
+      start: "npm run dev",
+      build: "npm run build",
+      path: "src/pages\nsrc/components\nsrc/assets\nsrc/data\nsrc/styles",
+      setupItem:
+        "React components, page data, assets, routing structure, and style files",
+    };
+  }
+
+  return {
+    env: `VITE_TEMPLATE_ID="${product.id}"\nVITE_TEMPLATE_NAME="${product.title}"\nVITE_TEMPLATE_STACK="${tagText}"`,
+    start: "npm run dev",
+    build: "npm run build",
+    path: "src\nassets\nstyles\ncomponents",
+    setupItem:
+      "HTML structure, CSS files, JavaScript interactions, and responsive assets",
+  };
+};
+
 const getProductDiscount = (product) => {
   if (product.discountPercent) return Number(product.discountPercent);
   if (product.discount) return Number(product.discount);
@@ -514,8 +676,12 @@ const getUniqueProductFeatures = (product) => {
     "Clean reusable sections",
   ];
 
+  const tags = getProductTechTags(product);
+  const stackLabel = tags.join(", ");
+
   const uniqueFeaturePool = [
     `${product.subCategory} focused section structure`,
+    `${stackLabel} based clean implementation`,
     `Optimized ${product.group.toLowerCase()} conversion flow`,
     `Premium ${product.source.toLowerCase()} presentation style`,
     "Reusable content blocks for faster customization",
@@ -535,11 +701,106 @@ const getUniqueProductFeatures = (product) => {
 };
 
 const getProductShortDescription = (product) => {
-  return `${product.title} is a premium ${product.subCategory.toLowerCase()} template crafted for ${product.group.toLowerCase()} projects. It includes polished UI sections, responsive layouts, clean visual hierarchy, and conversion-focused blocks for a faster launch.`;
+  const tags = getProductTechTags(product);
+
+  return `${product.title} is a premium ${product.subCategory.toLowerCase()} template crafted with ${tags.join(
+    ", "
+  )} for ${product.group.toLowerCase()} projects. It includes polished UI sections, responsive layouts, clean visual hierarchy, and conversion-focused blocks for a faster launch.`;
 };
 
 const getProductDocumentation = (product) => {
-  return `${product.title} is built as a complete ${product.subCategory.toLowerCase()} website solution for ${product.group.toLowerCase()} use cases. The design focuses on clear content presentation, smooth user flow, reusable sections, and professional spacing. Every section is structured to help users understand the product, explore features, compare value, and take action with confidence. This template works well for client projects, marketplace products, business launches, and production-ready digital experiences. It includes flexible page layouts, mobile responsive behavior, and organized content blocks so customization stays simple and scalable.`;
+  const tags = getProductTechTags(product);
+
+  return `${product.title} is built as a complete ${product.subCategory.toLowerCase()} website solution for ${product.group.toLowerCase()} use cases. The template uses a practical ${tags.join(
+    ", "
+  )} stack so customization stays simple, scalable, and production-friendly. The design focuses on clear content presentation, smooth user flow, reusable sections, professional spacing, and responsive behavior. Every section is structured to help users understand the product, explore features, compare value, and take action with confidence. This template works well for client projects, marketplace products, business launches, and production-ready digital experiences.`;
+};
+
+const buildPrerequisites = (product) => {
+  const safeId = String(product.id).padStart(3, "0");
+  const folderName = `${normalizeText(product.slug || product.title)}-${safeId}`;
+  const tags = getProductTechTags(product);
+  const config = getStackConfig(product);
+
+  return [
+    `${product.title} workspace prepared with Node.js 18+`,
+    `Create a clean project folder named "${folderName}" before setup`,
+    `Required stack prepared: ${tags.join(", ")}`,
+    `Prepare ${config.setupItem} for this specific ${product.subCategory} template`,
+  ];
+};
+
+const buildInstallationGuide = (product) => {
+  const projectFolder = `${normalizeText(product.slug || product.title)}-${String(
+    product.id
+  ).padStart(3, "0")}`;
+
+  const packageName = normalizeText(product.slug || product.title);
+
+  const componentName = product.title
+    .replace(/[^a-zA-Z0-9 ]/g, "")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 3)
+    .join("");
+
+  const config = getStackConfig(product);
+  const tags = getProductTechTags(product);
+  const stackLabel = tags.join(", ");
+
+  return {
+    prerequisites: buildPrerequisites(product),
+    steps: [
+      {
+        id: 1,
+        title: `Download ${product.title}`,
+        subtitle: `Create a clean local copy of the ${product.subCategory} template package.`,
+        language: "BASH",
+        code: `git clone https://github.com/templaraa/${packageName}.git\ncd ${projectFolder}`,
+        note: `Use this folder only for ${product.title}, so the setup stays separate from other templates.`,
+      },
+      {
+        id: 2,
+        title: `Install ${stackLabel} Dependencies`,
+        subtitle: `Install the required packages for the ${stackLabel} based setup.`,
+        language: "BASH",
+        code: `npm install\nnpm install @vitejs/plugin-react --save-dev`,
+        note: `This template is prepared for ${stackLabel}. Install dependencies before editing ${product.subCategory} sections.`,
+      },
+      {
+        id: 3,
+        title: `Configure ${product.title}`,
+        subtitle: `Add product-specific environment settings for this ${stackLabel} template.`,
+        language: "ENV",
+        code: `VITE_TEMPLATE_ID="${product.id}"\nVITE_TEMPLATE_NAME="${product.title}"\nVITE_TEMPLATE_SLUG="${product.slug}"\nVITE_TEMPLATE_CATEGORY="${product.group}"\nVITE_TEMPLATE_SUBCATEGORY="${product.subCategory}"\nVITE_TEMPLATE_STACK="${stackLabel}"\n${config.env}`,
+        note: `Create a .env file in the project root and paste these values before running ${product.title}.`,
+      },
+      {
+        id: 4,
+        title: `Run ${product.title} Locally`,
+        subtitle: `Start the development server and preview the ${product.subCategory} layout.`,
+        language: "BASH",
+        code: `${config.start}\n# fallback\nnpm run dev`,
+        note: `If the custom script is not available, use npm run dev to run the ${stackLabel} project.`,
+      },
+      {
+        id: 5,
+        title: `Customize ${product.subCategory} Sections`,
+        subtitle: `Update images, content, colors, layout blocks, and page data for ${product.title}.`,
+        language: "TEXT",
+        code: `${config.path}\nsrc/assets/images/products\nsrc/data/products.js\nsrc/components/${componentName || "Template"}Sections`,
+        note: `Most edits for this ${stackLabel} template should be done inside these folders.`,
+      },
+      {
+        id: 6,
+        title: `Build ${product.title} for Production`,
+        subtitle: `Generate an optimized production build for this ${stackLabel} template.`,
+        language: "BASH",
+        code: `${config.build}\n# fallback\nnpm run build\nnpm run preview`,
+        note: "After preview testing, upload the dist folder to Netlify, Vercel, or your preferred hosting platform.",
+      },
+    ],
+  };
 };
 
 const createProduct = ({
@@ -558,7 +819,6 @@ const createProduct = ({
   sales = "",
   oldPrice = "",
   discountPercent = "",
-  tags,
   description,
   documentation,
   features,
@@ -571,6 +831,8 @@ const createProduct = ({
     title,
     author,
     group,
+    category: group,
+    mainCategory: group,
     tech: subCategory,
     subCategory,
     price,
@@ -587,17 +849,22 @@ const createProduct = ({
     discountPercent,
   });
 
-  return {
+  const finalProduct = {
     ...productBase,
     discountPercent: finalDiscount,
     oldPrice:
       oldPrice ||
       Number((Number(price) / (1 - finalDiscount / 100)).toFixed(2)),
-    tags: tags || productTagsByGroup[group] || ["html", "react", "template"],
+    tags: getProductTechTags(productBase),
     description: description || getProductShortDescription(productBase),
     documentation: documentation || getProductDocumentation(productBase),
     features: features || getUniqueProductFeatures(productBase),
     includedPages: includedPages || getUniqueIncludedPages(productBase),
+  };
+
+  return {
+    ...finalProduct,
+    installationGuide: buildInstallationGuide(finalProduct),
   };
 };
 
@@ -605,6 +872,7 @@ export const products = [
   createProduct({
     id: 35,
     slug: "modern-ecommerce-store",
+    slugAliases: ["ecommerce-templates"],
     title: "eCommerce Templates",
     author: "Templara Studio",
     group: "Ecommerce",
@@ -616,11 +884,11 @@ export const products = [
     badge: "Featured",
     discountPercent: 28,
     sales: "184 Sales",
-    tags: ["product pages", "shop layouts", "checkout"],
   }),
   createProduct({
     id: 36,
     slug: "business-consulting-template",
+    slugAliases: ["business-websites"],
     title: "Business Websites",
     author: "Templara Studio",
     group: "Business",
@@ -632,11 +900,11 @@ export const products = [
     badge: "Featured",
     discountPercent: 19,
     sales: "151 Sales",
-    tags: ["corporate", "agency", "startup"],
   }),
   createProduct({
     id: 37,
     slug: "creative-portfolio-template",
+    slugAliases: ["portfolio-designs"],
     title: "Portfolio Designs",
     author: "Templara Studio",
     group: "Portfolio",
@@ -648,11 +916,11 @@ export const products = [
     badge: "Featured",
     discountPercent: 17,
     sales: "137 Sales",
-    tags: ["personal", "creative", "resume"],
   }),
   createProduct({
     id: 38,
     slug: "movie-streaming-platform",
+    slugAliases: ["entertainment-pages"],
     title: "Entertainment Pages",
     author: "Templara Studio",
     group: "Entertainment",
@@ -663,11 +931,11 @@ export const products = [
     source: "Homepage Category",
     discountPercent: 22,
     sales: "119 Sales",
-    tags: ["events", "media", "streaming"],
   }),
   createProduct({
     id: 39,
     slug: "ai-technology-landing",
+    slugAliases: ["technology-layouts"],
     title: "Technology Layouts",
     author: "Templara Studio",
     group: "Technology",
@@ -679,11 +947,11 @@ export const products = [
     badge: "Featured",
     discountPercent: 26,
     sales: "176 Sales",
-    tags: ["saas", "ai tools", "dashboard"],
   }),
   createProduct({
     id: 40,
     slug: "design-studio-website",
+    slugAliases: ["studio-templates"],
     title: "Studio Templates",
     author: "Templara Studio",
     group: "Studio",
@@ -694,7 +962,6 @@ export const products = [
     source: "Homepage Category",
     discountPercent: 20,
     sales: "128 Sales",
-    tags: ["design studio", "branding", "showcase"],
   }),
 
   createProduct({
@@ -1409,10 +1676,10 @@ export const products = [
 ];
 
 export const allItemsMixOrder = [
-  101, 201, 35, 102, 202, 39, 109, 22, 103, 203, 36, 104, 205, 105, 204, 37,
-  106, 206, 40, 107, 26, 108, 208, 38, 9, 207, 209, 1, 2, 3, 4, 5, 6, 7, 8,
-  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29,
-  30, 31, 32, 33, 34,
+  102, 202, 39, 101, 201, 35, 103, 203, 36, 109, 22, 104, 205, 37, 105, 204,
+  106, 206, 40, 108, 208, 38, 107, 26, 207, 209, 9, 1, 3, 5, 7, 2, 4, 6, 8,
+  10, 12, 14, 16, 11, 13, 15, 17, 18, 20, 21, 19, 23, 25, 24, 27, 29, 28,
+  30, 32, 34, 31, 33,
 ];
 
 export const mainFilters = [
@@ -1517,6 +1784,37 @@ export const categoryMap = {
   "fashion-store": "Retails",
   pos: "Retails",
   marketplace: "Retails",
+};
+
+export const getProductBySlug = (slug = "") => {
+  const normalizedSlug = normalizeText(slug);
+
+  return products.find((product) => {
+    const productSlug = normalizeText(product.slug);
+    const aliases = product.slugAliases || [];
+
+    return (
+      productSlug === normalizedSlug ||
+      aliases.some((alias) => normalizeText(alias) === normalizedSlug)
+    );
+  });
+};
+
+export const getProductById = (id) => {
+  return products.find((product) => Number(product.id) === Number(id));
+};
+
+export const getRelatedProducts = (currentProduct, limit = 6) => {
+  if (!currentProduct) return products.slice(0, limit);
+
+  return products
+    .filter(
+      (product) =>
+        product.id !== currentProduct.id &&
+        (product.group === currentProduct.group ||
+          product.subCategory === currentProduct.subCategory)
+    )
+    .slice(0, limit);
 };
 
 export default products;
