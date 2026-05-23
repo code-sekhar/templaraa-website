@@ -136,7 +136,7 @@
 
 .cart-layout {
     display: grid;
-    grid-template-columns: minmax(0, 856px) 416px;
+    grid-template-columns: minmax(0, 856px) 462px;
     gap: 24px;
     align-items: flex-start;
 }
@@ -278,7 +278,7 @@
 }
 
 .cart-product-tags small.highlight {
-    color: #ef654f;
+    color: #7c7c7c;
 }
 
 /* Item Actions Start */
