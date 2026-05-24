@@ -1,7 +1,7 @@
 .product-details-page {
     width: 100%;
     background: #ffffff;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 .details-main-section {
@@ -82,8 +82,7 @@
     border-radius: 13px;
     background: #f8fbff;
     overflow: hidden;
-    position: sticky;
-    top: 24px;
+    position: relative;
     box-shadow: 0 5px 46px rgba(7, 24, 63, 0.048);
 }
 
@@ -2821,3 +2820,67 @@
 }
 
 /* Mobile Action Buttons Equal Row Final Fix End */
+
+
+/* Product Details Desktop Sticky Image Final Start */
+
+@media (min-width: 992px) {
+    .product-details-page,
+    .details-main-section,
+    .details-container,
+    .details-hero-layout {
+        overflow: visible;
+    }
+
+    .product-details-page {
+        overflow-x: clip;
+    }
+
+    .details-hero-layout {
+        align-items: flex-start;
+    }
+
+    .details-gallery-area,
+    .details-gallery-area.single-preview,
+    .details-gallery-area.details-sticky-gallery {
+        position: sticky;
+        top: 5px;
+        z-index: 3;
+        transition: top 0.25s ease, transform 0.25s ease;
+        will-change: top;
+    }
+
+    .details-preview-card {
+        position: relative;
+        top: auto;
+    }
+
+    .details-summary-area,
+    .details-summary-area.details-scroll-summary {
+        min-width: 0;
+        height: auto;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 991px) {
+    .product-details-page {
+        overflow-x: hidden;
+    }
+
+    .details-gallery-area,
+    .details-gallery-area.single-preview,
+    .details-gallery-area.details-sticky-gallery {
+        position: relative;
+        top: auto;
+        height: auto;
+        z-index: auto;
+    }
+
+    .details-preview-card {
+        position: relative;
+        top: auto;
+    }
+}
+
+/* Product Details Desktop Sticky Image Final End */

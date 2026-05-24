@@ -6,6 +6,8 @@ import Footer from "./components/Footer/Footer";
 
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
+import Faqs from "./pages/Faqs/Faqs";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import Product from "./pages/Product/Product";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import Cart from "./pages/Cart/Cart";
@@ -160,6 +162,10 @@ function App() {
         />
 
         <Route path="/about" element={<About />} />
+
+        <Route path="/faqs" element={<Faqs />} />
+
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
         <Route
           path="/products"

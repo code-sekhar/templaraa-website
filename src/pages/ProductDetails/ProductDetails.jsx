@@ -593,7 +593,7 @@ function ProductDetails({ onAddToCart }) {
           </div>
 
           <div className="details-hero-layout">
-            <div className="details-gallery-area single-preview">
+            <div className="details-gallery-area single-preview details-sticky-gallery">
               <div className="details-preview-card">
                 {product.badge ? (
                   <span
@@ -609,7 +609,7 @@ function ProductDetails({ onAddToCart }) {
               </div>
             </div>
 
-            <div className="details-summary-area">
+            <div className="details-summary-area details-scroll-summary">
               <div className="details-title-row">
                 <h1>{product.title}</h1>
               </div>

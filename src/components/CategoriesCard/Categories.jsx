@@ -12,9 +12,10 @@ const categoryData = [
   {
     id: 1,
     title: "eCommerce Templates",
-    path: "/products/modern-ecommerce-store",
+    category: "eCommerce",
+    path: "/products?category=eCommerce",
     image: ecommerceImg,
-    buttonText: "View Details",
+    buttonText: "View More",
     tags: [
       { label: "Product Pages", count: 25 },
       { label: "Shop Layouts", count: 15 },
@@ -26,9 +27,10 @@ const categoryData = [
   {
     id: 2,
     title: "Business Websites",
-    path: "/products/business-consulting-template",
+    category: "Business",
+    path: "/products?category=Business",
     image: businessImg,
-    buttonText: "View Details",
+    buttonText: "View More",
     tags: [
       { label: "Corporate", count: 22 },
       { label: "Agency", count: 18 },
@@ -40,9 +42,10 @@ const categoryData = [
   {
     id: 3,
     title: "Portfolio Designs",
-    path: "/products/creative-portfolio-template",
+    category: "Portfolio",
+    path: "/products?category=Portfolio",
     image: portfolioImg,
-    buttonText: "View Details",
+    buttonText: "View More",
     tags: [
       { label: "Personal", count: 20 },
       { label: "Creative", count: 16 },
@@ -54,9 +57,10 @@ const categoryData = [
   {
     id: 4,
     title: "Entertainment Pages",
-    path: "/products/movie-streaming-platform",
+    category: "Entertainment",
+    path: "/products?category=Entertainment",
     image: entertainmentImg,
-    buttonText: "View Details",
+    buttonText: "View More",
     tags: [
       { label: "Events", count: 17 },
       { label: "Media", count: 15 },
@@ -68,9 +72,10 @@ const categoryData = [
   {
     id: 5,
     title: "Technology Layouts",
-    path: "/products/ai-technology-landing",
+    category: "Technology",
+    path: "/products?category=Technology",
     image: technologyImg,
-    buttonText: "View Details",
+    buttonText: "View More",
     tags: [
       { label: "SaaS", count: 24 },
       { label: "AI Tools", count: 19 },
@@ -82,9 +87,10 @@ const categoryData = [
   {
     id: 6,
     title: "Studio Templates",
-    path: "/products/design-studio-website",
+    category: "Studio",
+    path: "/products?category=Studio",
     image: studioImg,
-    buttonText: "View Details",
+    buttonText: "View More",
     tags: [
       { label: "Design Studio", count: 21 },
       { label: "Branding", count: 15 },
@@ -105,11 +111,15 @@ function Categories({ searchValue = "", onExploreCategory, onExploreMore }) {
 
     const titleMatch = category.title.toLowerCase().includes(searchText);
 
+    const categoryMatch = category.category
+      .toLowerCase()
+      .includes(searchText);
+
     const tagMatch = category.tags.some((tag) =>
       tag.label.toLowerCase().includes(searchText)
     );
 
-    return titleMatch || tagMatch;
+    return titleMatch || categoryMatch || tagMatch;
   });
 
   const handleExploreCategory = (category) => {
@@ -150,7 +160,11 @@ function Categories({ searchValue = "", onExploreCategory, onExploreMore }) {
         {filteredCategories.length > 0 ? (
           <div className="categories-grid">
             {filteredCategories.map((category, index) => (
-              <div className="category-card" key={category.id}>
+              <div
+                className="category-card"
+                key={category.id}
+                onClick={() => handleExploreCategory(category)}
+              >
                 <div className="category-card-content">
                   <h3>{category.title}</h3>
 
@@ -170,7 +184,10 @@ function Categories({ searchValue = "", onExploreCategory, onExploreMore }) {
                           ? "explore-card-btn active"
                           : "explore-card-btn"
                       }
-                      onClick={() => handleExploreCategory(category)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleExploreCategory(category);
+                      }}
                     >
                       {category.buttonText}
                     </button>
