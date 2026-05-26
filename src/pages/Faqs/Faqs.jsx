@@ -63,7 +63,7 @@ function Faqs() {
           <div className="faq-layout">
             <div className="faq-content">
               <div className="faq-heading">
-                <h1>Frequently Asked Questions</h1>
+                <h1>Frequently Asked <span>Questions</span></h1>
 
                 <p>
                   Find quick answers about Templaraa templates, purchases,

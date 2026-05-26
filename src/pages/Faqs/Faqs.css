@@ -97,6 +97,10 @@
     letter-spacing: -0.045em;
 }
 
+.faq-heading h1 span {
+    color: #155be8;
+}
+
 .faq-heading p {
     max-width: 610px;
     margin: 16px 0 0;
