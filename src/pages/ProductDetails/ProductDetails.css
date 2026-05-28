@@ -1,3 +1,6 @@
+/*---------------------------
+    Product Details Page Start
+--------------------------- */
 .product-details-page {
     width: 100%;
     background: #ffffff;
@@ -1804,8 +1807,14 @@
     font-size: 15px;
     font-weight: 800;
 }
+/*---------------------------
+    Product Details Page End
+--------------------------- */
 
-/* Responsive Start */
+
+/* ---------------------------
+    Responsive Start
+--------------------------- */
 
 @media (max-width: 1280px) {
     .details-hero-layout {
@@ -2536,9 +2545,6 @@
     }
 }
 
-/* Responsive End */
-
-/* Mobile Action Buttons Final Fix Start */
 @media (max-width: 767px) {
     .details-action-panel {
         width: 100%;
@@ -2665,9 +2671,6 @@
         font-size: 17px;
     }
 }
-/* Mobile Action Buttons Final Fix End */
-
-/* Mobile Action Buttons Equal Row Final Fix Start */
 
 @media (max-width: 767px) {
     .details-action-panel {
@@ -2819,11 +2822,6 @@
     }
 }
 
-/* Mobile Action Buttons Equal Row Final Fix End */
-
-
-/* Product Details Desktop Sticky Image Final Start */
-
 @media (min-width: 992px) {
     .product-details-page,
     .details-main-section,
@@ -2883,4 +2881,6 @@
     }
 }
 
-/* Product Details Desktop Sticky Image Final End */
+/* ---------------------------
+    Responsive Start
+--------------------------- */

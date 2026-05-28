@@ -16,8 +16,9 @@
     padding-right: 48px;
 }
 
-/* Breadcrumb Start */
-
+/* ---------------------------
+    Breadcrumb Start
+--------------------------- */
 .product-breadcrumb {
     display: flex;
     align-items: center;
@@ -82,8 +83,14 @@
     font-weight: 700;
 }
 
-/* Breadcrumb End */
+/* ---------------------------
+    Breadcrumb End
+--------------------------- */
 
+
+/* ---------------------------
+    Product Layout Start
+--------------------------- */
 .product-listing-layout {
     display: grid;
     grid-template-columns: 282px 1fr;
@@ -948,7 +955,14 @@
     padding: 0 20px;
     font-weight: 800;
 }
+/* ---------------------------
+    Product Layout End
+--------------------------- */
 
+
+/* ---------------------------
+    Responsive Start
+--------------------------- */
 @media (max-width: 1199px) {
     .product-listing-container {
         padding-left: 32px;
@@ -1210,3 +1224,6 @@
         font-size: 11px;
     }
 }
+/* ---------------------------
+    Responsive Start
+--------------------------- */

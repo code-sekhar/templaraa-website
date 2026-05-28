@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
 import Faqs from "./pages/Faqs/Faqs";
+import Contact from "./pages/Contact/Contact";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import Product from "./pages/Product/Product";
 import ProductDetails from "./pages/ProductDetails/ProductDetails";
@@ -164,6 +165,8 @@ function App() {
         <Route path="/about" element={<About />} />
 
         <Route path="/faqs" element={<Faqs />} />
+
+        <Route path="/contact" element={<Contact />} />
 
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 

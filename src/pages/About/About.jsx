@@ -99,11 +99,6 @@ function About() {
 
   const handleJoinClick = (path) => {
     console.log("Go to signup page:", path);
-
-    /*
-      Later React Router connect korle:
-      navigate(path);
-    */
   };
 
   return (

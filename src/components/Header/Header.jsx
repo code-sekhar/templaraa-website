@@ -213,6 +213,31 @@ function Header({
     return `${selectedCountry.code} ${signupData.phone}`.trim();
   }, [selectedCountry.code, signupData.phone]);
 
+  const resetAllAuthForms = () => {
+    setLoginData(initialLoginData);
+    setSignupData(initialSignupData);
+    setForgotData(initialForgotData);
+    setSelectedCountry(countries[0]);
+    setIsCountryOpen(false);
+    setDemoOtp("");
+    setOtpValue("");
+    setErrors({});
+    setAuthMessage({
+      type: "",
+      text: "",
+    });
+    setShowPassword({
+      login: false,
+      signup: false,
+      forgotNew: false,
+      forgotConfirm: false,
+    });
+  };
+
+  useEffect(() => {
+    resetAllAuthForms();
+  }, []);
+
   useEffect(() => {
     if (isAuthOpen) {
       document.body.classList.add("auth-modal-open");
@@ -345,20 +370,18 @@ function Header({
   };
 
   const openAuthModal = (view = "login") => {
+    resetAllAuthForms();
     setAuthView(view);
     setIsAuthOpen(true);
     setIsTopMenuOpen(false);
     setIsCountryOpen(false);
-    clearAuthFeedback();
   };
 
   const closeAuthModal = () => {
     setIsAuthOpen(false);
     setAuthView("login");
     setIsCountryOpen(false);
-    setDemoOtp("");
-    setOtpValue("");
-    clearAuthFeedback();
+    resetAllAuthForms();
   };
 
   const switchAuthView = (view) => {
@@ -704,6 +727,7 @@ function Header({
           name={name}
           value={value}
           placeholder={placeholder}
+          autoComplete="new-password"
           onChange={onChange}
         />
 
@@ -857,7 +881,12 @@ function Header({
 
         {renderRoleCards(loginRole, setLoginRole)}
 
-        <form className="auth-form" onSubmit={handleLoginSubmit} noValidate>
+        <form
+          className="auth-form"
+          onSubmit={handleLoginSubmit}
+          noValidate
+          autoComplete="off"
+        >
           <div className="auth-field">
             <label htmlFor="login-email">Email / User Name</label>
             <input
@@ -867,6 +896,7 @@ function Header({
               name="email"
               value={loginData.email}
               placeholder="abc@xyz.com"
+              autoComplete="off"
               onChange={handleLoginChange}
             />
             {renderError("email")}
@@ -891,6 +921,7 @@ function Header({
                 type="checkbox"
                 name="remember"
                 checked={loginData.remember}
+                autoComplete="off"
                 onChange={handleLoginChange}
               />
               <span></span>
@@ -935,7 +966,12 @@ function Header({
 
         {renderRoleCards(signupRole, setSignupRole)}
 
-        <form className="auth-form" onSubmit={handleSignupSubmit} noValidate>
+        <form
+          className="auth-form"
+          onSubmit={handleSignupSubmit}
+          noValidate
+          autoComplete="off"
+        >
           <div className="auth-field">
             <label htmlFor="signup-name">Full Name</label>
             <input
@@ -945,6 +981,7 @@ function Header({
               name="fullName"
               value={signupData.fullName}
               placeholder="Enter your full name"
+              autoComplete="off"
               onChange={handleSignupChange}
             />
             {renderError("fullName")}
@@ -959,6 +996,7 @@ function Header({
               name="email"
               value={signupData.email}
               placeholder="abc@xyz.com"
+              autoComplete="off"
               onChange={handleSignupChange}
             />
             {renderError("email")}
@@ -990,6 +1028,7 @@ function Header({
                 name="phone"
                 value={fullSignupPhone}
                 placeholder={`${selectedCountry.code} 1700000000`}
+                autoComplete="off"
                 onChange={handleSignupChange}
               />
             </div>
@@ -1029,7 +1068,12 @@ function Header({
           <strong>{demoOtp}</strong>
         </div>
 
-        <form className="auth-form" onSubmit={handleSignupOtpSubmit} noValidate>
+        <form
+          className="auth-form"
+          onSubmit={handleSignupOtpSubmit}
+          noValidate
+          autoComplete="off"
+        >
           <div className="auth-field">
             <label htmlFor="signup-otp-code">OTP Code</label>
             <input
@@ -1039,6 +1083,7 @@ function Header({
               value={otpValue}
               maxLength="4"
               placeholder="Enter 4 digit OTP"
+              autoComplete="off"
               onChange={(event) => {
                 const value = event.target.value
                   .replace(/\D/g, "")
@@ -1086,7 +1131,12 @@ function Header({
           <p>Enter your email and create a new password for your account.</p>
         </div>
 
-        <form className="auth-form" onSubmit={handleForgotSubmit} noValidate>
+        <form
+          className="auth-form"
+          onSubmit={handleForgotSubmit}
+          noValidate
+          autoComplete="off"
+        >
           <div className="auth-field">
             <label htmlFor="forgot-email">Email Address</label>
             <input
@@ -1096,6 +1146,7 @@ function Header({
               name="email"
               value={forgotData.email}
               placeholder="abc@xyz.com"
+              autoComplete="off"
               onChange={handleForgotChange}
             />
             {renderError("email")}
@@ -1335,11 +1386,8 @@ function Header({
       </aside>
 
       {isAuthOpen && (
-        <div className="auth-modal-overlay" onMouseDown={closeAuthModal}>
-          <div
-            className="auth-modal-card"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
+        <div className="auth-modal-overlay">
+          <div className="auth-modal-card">
             <button
               type="button"
               className="auth-modal-close"

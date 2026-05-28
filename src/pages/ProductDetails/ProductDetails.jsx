@@ -183,8 +183,8 @@ function ProductDetails({ onAddToCart }) {
     if (!product) return null;
 
     return {
-      email: product.sellerEmail || "support@example.com",
-      supportEmail: product.supportEmail || "help@example.com",
+      email: product.sellerEmail || "support@templaraa.com",
+      supportEmail: product.supportEmail || "help@templaraa.com",
     };
   }, [product]);
 

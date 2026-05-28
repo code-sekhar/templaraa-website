@@ -1,0 +1,977 @@
+/* ---------------------------
+    Contact CSS Start
+--------------------------- */
+.contact-page {
+    width: 100%;
+    background: #ffffff;
+    overflow-x: hidden;
+}
+
+.contact-section {
+    width: 100%;
+    min-height: 76vh;
+    padding: 40px 0 80px;
+    background:
+        radial-gradient(circle at 92% 16%, rgba(226, 223, 223, 0.08), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
+}
+
+.contact-container {
+    max-width: 1440px;
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
+.contact-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    color: #8f9aaf;
+}
+
+.contact-breadcrumb a {
+    color: #155be8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.contact-breadcrumb span {
+    color: #9aa5b8;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.contact-breadcrumb a:hover {
+    color: #ef654f;
+}
+
+.contact-breadcrumb ion-icon {
+    font-size: 19px;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 655px) minmax(420px, 1fr);
+    gap: 82px;
+}
+
+.contact-left {
+    width: 100%;
+}
+
+.contact-small-title {
+    width: fit-content;
+    min-height: 34px;
+    padding: 0 14px;
+    margin-bottom: 16px;
+    border-radius: 999px;
+    background: #fff3f0;
+    border: 1px solid rgba(239, 101, 79, 0.18);
+    color: #ef654f;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+}
+
+.contact-left h1 {
+    max-width: 650px;
+    margin: 0;
+    color: #07183f;
+    font-family: "Inter", sans-serif;
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+}
+
+.contact-left h1 span {
+    color: #155be8;
+}
+
+.contact-left p {
+    max-width: 610px;
+    margin: 16px 0 0;
+    color: #5d6a7f;
+    font-family: "Inter", sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.72;
+}
+
+.contact-info-list {
+    width: 100%;
+    max-width: 610px;
+    display: grid;
+    gap: 12px;
+    margin-top: 34px;
+}
+
+.contact-info-card {
+    width: 100%;
+    min-height: 74px;
+    border-radius: 10px;
+    background: #f4f7fb;
+    border: 1px solid #edf1f6;
+    padding: 13px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.contact-info-card:hover {
+    background: #ffffff;
+    border-color: rgba(239, 101, 79, 0.28);
+    box-shadow: 0 18px 42px rgba(6, 24, 63, 0.06);
+    transform: translateY(-1px);
+}
+
+.contact-info-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 7px;
+    background: #ef654f;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-info-icon ion-icon {
+    font-size: 22px;
+}
+
+.contact-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.contact-info-content strong {
+    color: #06183f;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.contact-info-content small {
+    color: #5d6a7f;
+    font-family: "Inter", sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.contact-right {
+    width: 100%;
+}
+
+.contact-form-card {
+    width: 100%;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #edf1f6;
+    box-shadow: 0 18px 42px rgba(6, 24, 63, 0.06);
+    padding: 34px;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.contact-form-card:hover {
+    border-color: rgba(239, 101, 79, 0.22);
+}
+
+.contact-form-heading {
+    margin-bottom: 28px;
+}
+
+.contact-form-heading h2 {
+    margin: 0;
+    color: #06183f;
+    font-family: "Inter", sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: -0.04em;
+}
+
+.contact-form-heading p {
+    max-width: 460px;
+    margin: 10px 0 0;
+    color: #5d6a7f;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.65;
+}
+
+.contact-field {
+    margin-bottom: 20px;
+}
+
+.contact-field label {
+    display: block;
+    margin-bottom: 9px;
+    color: #344054;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.contact-field input,
+.contact-field textarea {
+    width: 100%;
+    border: 1px solid #cfd7e4;
+    background: #ffffff;
+    border-radius: 8px;
+    outline: none;
+    color: #06183f;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    transition: 0.25s ease;
+}
+
+.contact-field input {
+    height: 50px;
+    padding: 0 16px;
+}
+
+.contact-field textarea {
+    min-height: 138px;
+    resize: vertical;
+    padding: 14px 16px;
+    line-height: 1.65;
+}
+
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+    color: #9aa5b8;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+    border-color: #ef654f;
+    box-shadow: 0 0 0 4px rgba(239, 101, 79, 0.1);
+}
+
+.contact-field input.error,
+.contact-field textarea.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.contact-field-error {
+    margin: 7px 0 0;
+    color: #ef4444;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.contact-success-message {
+    width: 100%;
+    min-height: 42px;
+    border-radius: 8px;
+    padding: 11px 14px;
+    margin: 0 0 18px;
+    color: #067647;
+    background: #ecfdf3;
+    border: 1px solid #abefc6;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.contact-submit-button {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #ef654f;
+    background: #ef654f;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.contact-submit-button:hover {
+    background: #e95842;
+    border-color: #e95842;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(239, 101, 79, 0.22);
+}
+
+.contact-submit-button ion-icon {
+    font-size: 18px;
+}
+/* ---------------------------
+    Contact CSS Start
+--------------------------- */
+
+
+/* ---------------------------
+    Responsive Start
+--------------------------- */
+
+@media (max-width: 1399px) {
+    .contact-layout {
+        grid-template-columns: minmax(0, 625px) minmax(380px, 1fr);
+        gap: 58px;
+    }
+
+    .contact-left h1 {
+        font-size: 46px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .contact-section {
+        padding-bottom: 66px;
+    }
+
+    .contact-container {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+
+    .contact-breadcrumb {
+        margin-bottom: 44px;
+    }
+
+    .contact-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(380px, 0.86fr);
+        gap: 38px;
+    }
+
+    .contact-left h1 {
+        font-size: 38px;
+    }
+
+    .contact-left p {
+        font-size: 16px;
+    }
+
+    .contact-form-card {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 991px) {
+    .contact-section {
+        padding: 30px 0 62px;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 42px;
+        align-items: start;
+    }
+
+    .contact-left {
+        order: 1;
+    }
+
+    .contact-right {
+        order: 2;
+    }
+
+    .contact-left h1 {
+        max-width: 760px;
+        font-size: 40px;
+    }
+
+    .contact-left p {
+        max-width: 680px;
+    }
+
+    .contact-info-list {
+        max-width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .contact-info-card {
+        align-items: flex-start;
+        min-height: 112px;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 767px) {
+    .contact-section {
+        padding: 24px 0 54px;
+    }
+
+    .contact-container {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .contact-breadcrumb {
+        margin-bottom: 30px;
+        gap: 10px;
+    }
+
+    .contact-breadcrumb ion-icon {
+        font-size: 18px;
+    }
+
+    .contact-breadcrumb span {
+        font-size: 14px;
+    }
+
+    .contact-small-title {
+        min-height: 32px;
+        padding: 0 13px;
+        margin-bottom: 14px;
+        font-size: 13px;
+    }
+
+    .contact-left h1 {
+        font-size: 34px;
+        line-height: 1.14;
+    }
+
+    .contact-left p {
+        margin-top: 13px;
+        font-size: 15px;
+        line-height: 1.68;
+    }
+
+    .contact-info-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 28px;
+    }
+
+    .contact-info-card {
+        min-height: 72px;
+        flex-direction: row;
+        align-items: center;
+        padding: 13px 14px;
+        border-radius: 9px;
+    }
+
+    .contact-info-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+    }
+
+    .contact-info-icon ion-icon {
+        font-size: 21px;
+    }
+
+    .contact-layout {
+        gap: 34px;
+    }
+
+    .contact-form-card {
+        border-radius: 10px;
+        padding: 26px 18px;
+    }
+
+    .contact-form-heading {
+        margin-bottom: 24px;
+    }
+
+    .contact-form-heading h2 {
+        font-size: 26px;
+    }
+
+    .contact-form-heading p {
+        font-size: 14.5px;
+    }
+
+    .contact-field {
+        margin-bottom: 18px;
+    }
+
+    .contact-field input {
+        height: 48px;
+        font-size: 14.5px;
+    }
+
+    .contact-field textarea {
+        min-height: 126px;
+        font-size: 14.5px;
+    }
+}
+
+@media (max-width: 575px) {
+    .contact-section {
+        padding-bottom: 48px;
+    }
+
+    .contact-left h1 {
+        font-size: 30px;
+        letter-spacing: -0.035em;
+    }
+
+    .contact-left p {
+        font-size: 14.5px;
+    }
+
+    .contact-info-content strong {
+        font-size: 15px;
+    }
+
+    .contact-info-content small {
+        font-size: 13.8px;
+    }
+
+    .contact-form-heading h2 {
+        font-size: 25px;
+    }
+
+    .contact-submit-button {
+        height: 48px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .contact-breadcrumb {
+        margin-bottom: 26px;
+    }
+
+    .contact-left h1 {
+        font-size: 27px;
+    }
+
+    .contact-left p {
+        font-size: 14px;
+    }
+
+    .contact-form-card {
+        padding: 24px 14px;
+    }
+
+    .contact-form-heading h2 {
+        font-size: 24px;
+    }
+
+    .contact-field label {
+        font-size: 13.5px;
+    }
+
+    .contact-field input,
+    .contact-field textarea {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 390px) {
+    .contact-left h1 {
+        font-size: 25px;
+    }
+
+    .contact-info-card {
+        gap: 12px;
+    }
+
+    .contact-info-icon {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .contact-form-card {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+}
+
+/* ---------------------------
+    Responsive End
+--------------------------- */
+
+
+
+/* ---------------------------
+    Google Map Location Start 
+--------------------------- */
+
+.contact-google-map-section {
+    width: 100%;
+    margin-top: 60px;
+}
+
+.google-map-card {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid #edf1f6;
+    background: #ffffff;
+    box-shadow: 0 18px 42px rgba(6, 24, 63, 0.06);
+    overflow: hidden;
+}
+
+.google-map-frame {
+    width: 100%;
+    height: 520px;
+    position: relative;
+    overflow: hidden;
+    background: #f4f7fb;
+}
+
+.google-map-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    filter: grayscale(8%) contrast(0.95) saturate(0.95);
+}
+
+.google-map-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 28%, transparent 66%, rgba(255, 255, 255, 0.22) 100%),
+        radial-gradient(circle at 50% 48%, rgba(239, 101, 79, 0.08), transparent 20%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.google-map-overlay-top {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    top: 24px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    pointer-events: none;
+}
+
+.map-brand-box {
+    min-height: 58px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    /* background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(237, 241, 246, 0.96);
+    box-shadow: 0 16px 34px rgba(6, 24, 63, 0.1);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px); */
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: auto;
+}
+
+.map-brand-box > span {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 8px;
+    background: #ef654f;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-brand-box > span ion-icon {
+    font-size: 19px;
+}
+
+.map-brand-box strong {
+    display: block;
+    color: #06183f;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+.map-brand-box small {
+    display: block;
+    color: #5d6a7f;
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.map-open-button {
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 9px;
+    background: #ef654f;
+    border: 1px solid #ef654f;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 14px 28px rgba(239, 101, 79, 0.22);
+    transition: 0.25s ease;
+    pointer-events: auto;
+}
+
+.map-open-button:hover {
+    background: #e95842;
+    border-color: #e95842;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.map-open-button ion-icon {
+    font-size: 17px;
+}
+
+.google-map-location-card {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    z-index: 4;
+    max-width: 430px;
+    min-height: 86px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.93);
+    border: 1px solid rgba(237, 241, 246, 0.96);
+    box-shadow: 0 18px 42px rgba(6, 24, 63, 0.1);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.google-map-location-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 7px;
+    background: #ef654f;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-map-location-icon ion-icon {
+    font-size: 23px;
+}
+
+.google-map-location-card strong {
+    display: block;
+    color: #06183f;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 5px;
+}
+
+.google-map-location-card p {
+    margin: 0;
+    color: #5d6a7f;
+    font-family: "Inter", sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.35;
+}
+/* ---------------------------
+Google Map Location End 
+--------------------------- */
+
+
+/* ---------------------------
+    Responsive Start
+--------------------------- */
+@media (max-width: 1199px) {
+    .contact-google-map-section {
+        margin-top: 66px;
+    }
+
+    .google-map-frame {
+        height: 480px;
+    }
+}
+
+@media (max-width: 991px) {
+    .contact-google-map-section {
+        margin-top: 62px;
+    }
+
+    .google-map-frame {
+        height: 450px;
+    }
+
+    .google-map-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .contact-google-map-section {
+        margin-top: 54px;
+    }
+
+    .google-map-card {
+        border-radius: 14px;
+    }
+
+    .google-map-frame {
+        height: 420px;
+    }
+
+    .google-map-overlay-top {
+        left: 18px;
+        right: 18px;
+        top: 18px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .map-brand-box {
+        min-height: 54px;
+        padding: 9px 12px;
+    }
+
+    .map-open-button {
+        min-height: 40px;
+        padding: 0 14px;
+        font-size: 13.5px;
+    }
+
+    .google-map-location-card {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        max-width: none;
+        min-height: 78px;
+        padding: 14px;
+    }
+
+    .google-map-location-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+    }
+
+    .google-map-info-grid {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .google-map-info-card {
+        min-height: 78px;
+        padding: 13px 14px;
+    }
+}
+
+@media (max-width: 575px) {
+    .contact-google-map-section {
+        margin-top: 48px;
+    }
+
+    .google-map-frame {
+        height: 390px;
+    }
+
+    .google-map-location-card {
+        align-items: flex-start;
+    }
+
+    .google-map-location-card strong,
+    .google-map-info-card strong {
+        font-size: 15px;
+    }
+
+    .google-map-location-card p,
+    .google-map-info-card p {
+        font-size: 13.8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .google-map-frame {
+        height: 370px;
+    }
+
+    .google-map-overlay-top {
+        left: 14px;
+        right: 14px;
+        top: 14px;
+    }
+
+    .google-map-location-card {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        gap: 12px;
+    }
+
+    .google-map-location-icon,
+    .google-map-info-card > span {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+    }
+
+    .google-map-info-grid {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 390px) {
+    .google-map-frame {
+        height: 350px;
+    }
+
+    .map-brand-box strong {
+        font-size: 14px;
+    }
+
+    .map-brand-box small {
+        font-size: 12px;
+    }
+}
+/* ---------------------------
+    Responsive End
+--------------------------- */
+
+

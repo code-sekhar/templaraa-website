@@ -4,8 +4,10 @@
     overflow-x: hidden;
 }
 
-/* Legal Hero Start */
 
+/* ---------------------------
+    Legal Hero Start
+--------------------------- */
 .legal-hero {
     width: 100%;
     padding: 68px 0 28px;
@@ -59,10 +61,14 @@
     line-height: 1.72;
 }
 
-/* Legal Hero End */
+/* ---------------------------
+    Legal Hero End
+--------------------------- */
 
-/* Legal Layout Start */
 
+/* ---------------------------
+    Legal Layout Start
+--------------------------- */
 .legal-section {
     width: 100%;
     padding: 28px 0 80px;
@@ -189,10 +195,14 @@
     font-size: 17px;
 }
 
-/* Legal Layout End */
+/* ---------------------------
+    Legal Layout End
+--------------------------- */
 
-/* Legal Content Start */
 
+/* ---------------------------
+    Legal Content Start
+--------------------------- */
 .legal-content-card {
     border-radius: 22px;
     padding: 44px 48px 40px;
@@ -346,10 +356,14 @@
     flex: 0 0 auto;
 }
 
-/* Legal Content End */
+/* ---------------------------
+    Legal Content End
+--------------------------- */
 
-/* Security Box Start */
 
+/* ---------------------------
+    Security Box Start
+--------------------------- */
 .legal-security-box {
     margin-top: 38px;
     border-radius: 16px;
@@ -395,11 +409,14 @@
     font-weight: 500;
     line-height: 1.65;
 }
+/* ---------------------------
+    Security Box End
+--------------------------- */
 
-/* Security Box End */
 
-/* Footer Action Start */
-
+/* ---------------------------
+    Footer Action Start
+--------------------------- */
 .legal-card-footer {
     margin-top: 42px;
     padding-top: 25px;
@@ -463,9 +480,15 @@
     font-size: 17px;
 }
 
-/* Footer Action End */
+/* ---------------------------
+    Footer Action End 
+--------------------------- */
 
-/* Responsive Start */
+
+
+/* ---------------------------
+    Responsive Start
+--------------------------- */
 
 @media (max-width: 1399px) {
     .legal-container {
@@ -706,11 +729,14 @@
         padding-right: 14px;
     }
 }
+/* ---------------------------
+    Responsive End
+--------------------------- */
 
-/* Responsive End */
 
-/* Print Start */
-
+/* ---------------------------
+    Print Start
+--------------------------- */
 @media print {
     .templaraa-header,
     .templaraa-footer,
@@ -736,5 +762,6 @@
         padding: 0;
     }
 }
-
-/* Print End */
+/* ---------------------------
+    Print End
+--------------------------- */

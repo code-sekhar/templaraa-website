@@ -1,3 +1,6 @@
+/*---------------------------
+    Faq Page style Start
+--------------------------- */
 .faq-page {
     width: 100%;
     background: #ffffff;
@@ -107,7 +110,7 @@
     color: #5d6a7f;
     font-family: "Inter", sans-serif;
     font-size: 17px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.72;
 }
 
@@ -243,8 +246,15 @@
     position: relative;
     z-index: 2;
 }
+/*---------------------------
+    Faq Page style End
+--------------------------- */
 
-/* Responsive Start */
+
+
+/* ---------------------------
+    Responsive Start 
+--------------------------- */
 
 @media (max-width: 1399px) {
     .faq-layout {
@@ -532,4 +542,6 @@
     }
 }
 
-/* Responsive End */
+/* ---------------------------
+    Responsive End 
+--------------------------- */
