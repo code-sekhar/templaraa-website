@@ -96,8 +96,15 @@
     display: block;
     object-fit: contain;
 }
-
+@media only screen and (max-width: 1900px) and (min-width: 1600px) {
+    .join-opportunity-container{
+        max-width: 1640px;
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+}
 @media (max-width: 1199px) {
+
     .join-opportunity-container {
         padding-left: 48px;
         padding-right: 48px;

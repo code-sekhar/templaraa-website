@@ -209,9 +209,9 @@
     margin: 0 0 7px;
     color: #07183f;
     font-family: "Inter", sans-serif;
-    font-size: 19px;
-    font-weight: 800;
-    line-height: 1.2;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
 }
 
 .new-arrival-card-body p {
@@ -357,7 +357,13 @@ button.new-arrival-control-btn.next {
         width: 400px;
     }
 }
-
+@media only screen and (max-width: 1900px) and (min-width: 1600px) {
+    .new-arrival-container{
+        max-width: 1640px;
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+}
 @media (max-width: 1199px) {
     .new-arrival-container {
         padding-left: 32px;

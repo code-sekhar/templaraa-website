@@ -197,8 +197,9 @@
     color: #07183f;
     font-family: "Inter", sans-serif;
     font-size: 19px;
-    font-weight: 800;
-    line-height: 1.2;
+    font-weight: 600;
+    line-height: 1;
+
 }
 
 .recently-card-content p {
@@ -303,6 +304,7 @@
 }
 
 @media (min-width: 1900px) {
+    
     .recently-tabs-marquee {
         width: 100%;
         overflow: hidden;
@@ -317,7 +319,16 @@
         margin: 0 auto;overflow: hidden;
     }
 }
-
+@media only screen and (max-width: 1900px) and (min-width: 1600px) {
+    .recently-container{
+        max-width: 1640px;
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+    .recently-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
 @media (max-width: 1199px) {
     .recently-container {
         padding-left: 32px;

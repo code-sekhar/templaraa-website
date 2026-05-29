@@ -200,7 +200,16 @@
         gap: 28px;
     }
 }
-
+@media only screen and (max-width: 1900px) and (min-width: 1600px) {
+    .categories-container{
+        max-width: 1640px;
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+    .categories-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
 @media (max-width: 1199px) {
     .categories-container {
         padding-left: 32px;
